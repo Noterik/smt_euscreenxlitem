@@ -1,0 +1,13 @@
+loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
+loadStyleSheet(screen,all)
+loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,specific)
+setRole(screen,"itempage")
+loadContent(screen,template)
+loadContent(screen,header)
+loadContent(screen,footer)
+loadContent(screen,viewer)
+loadContent(screen,related)
+callServer(init,screen)
+callServer(startViewer,screen)
+callServer(setMetadata,screen)
