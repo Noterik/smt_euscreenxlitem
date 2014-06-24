@@ -33,6 +33,10 @@ html {
 }
 body {
   height: 100%;
+  height: 100%;
+  background-color: #f2f2f2;
+  line-height: 1.5;
+  font-size: 14px;
 }
 body .page header .navbar {
   background: #ffffff;
