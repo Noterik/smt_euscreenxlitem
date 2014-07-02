@@ -84,6 +84,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 		setRelated(s);
 	}
 	
+	public void loadMoreRelated(Screen s){
+		System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
+	}
+	
 	public void startViewer(Screen s){
 		System.out.println("EuscreenxlitemApplication.startViewer()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
@@ -92,7 +96,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 		System.out.println("NAME: " + name);
 		
 		if(name.equals("video")){
+			System.out.println("GET THE VIDEO!");
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
+			System.out.println("VIDEO RETRIEVED!");
 			String[] videos = rawNode.getProperty("mount").split(",");
 			JSONObject objectToSend = new JSONObject();
 			JSONArray videosArray = new JSONArray();
@@ -128,28 +134,23 @@ public class EuscreenxlitemApplication extends Html5Application{
 		System.out.println("EuscreenxlitemApplication.setMetadata()");
 		
 		FsNode node = (FsNode) s.getProperty("mediaNode");
-		String title = node.getProperty(FieldMappings.getSystemFieldName("title"));
-		String originalTitle = node.getProperty(FieldMappings.getSystemFieldName("originalTitle"));
-		String provider = node.getProperty(FieldMappings.getSystemFieldName("provider"));
-		String productionYear = node.getProperty(FieldMappings.getSystemFieldName("year"));
-		String country = node.getProperty(FieldMappings.getSystemFieldName("country"));
-		String summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in lectus quis nibh gravida ultrices. Maecenas sollicitudin justo nec urna porta tincidunt. Ut cursus scelerisque interdum. Nulla varius ante et porta aliquet. Aenean nunc augue, aliquam eget nibh ut, mollis pretium lacus. Duis fermentum dui lobortis lorem malesuada, non consectetur erat malesuada. Proin malesuada odio id pulvinar vestibulum. Nam tincidunt arcu egestas nunc scelerisque rhoncus. Nulla et accumsan ante. Quisque ac massa vestibulum, consequat odio non, consectetur diam. Nam pellentesque orci in dolor porta laoreet. Vestibulum at lacinia nisi, ut mattis arcu. Vivamus nec auctor diam. Etiam dolor justo, pellentesque placerat lorem nec, fermentum consequat velit. Vestibulum lorem lectus, elementum sed felis sed, aliquet aliquet felis.";
-		String clipTitle = node.getProperty(FieldMappings.getSystemFieldName("clipTitle"));
-		String publisher = node.getProperty(FieldMappings.getSystemFieldName("publisher"));
-		String broadcastChannel = node.getProperty(FieldMappings.getSystemFieldName("broadcastChannel"));
 		
 		JSONObject message = new JSONObject();
-		message.put("title", title);
-		message.put("originalTitle", originalTitle);
-		message.put("provider", provider);
-		message.put("productionYear", productionYear);
-		message.put("country", country);
-		message.put("summary", summary);
-		message.put("clipTitle", clipTitle);
-		message.put("publisher", publisher);
-		message.put("broadcastChannel", broadcastChannel);
+		
+		HashMap<String, String> mappings = FieldMappings.getMappings();
+		for(Iterator<String> i = mappings.keySet().iterator(); i.hasNext();){
+			String readable = i.next();
+			String systemName = mappings.get(readable);
+			
+			try{
+				message.put(readable, node.getProperty(FieldMappings.getSystemFieldName(readable)));
+			}catch(NullPointerException npe){
+				message.put(readable, "-");
+			}
+		}
+		
+		s.putMsg("metadata", "", "setData(" + message + ")");
 	
-		s.putMsg("template", "", "setData(" + message + ")");
 	}
 	
 	private void setRelated(Screen s){
@@ -191,6 +192,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 			
 			relatedItem.put("id", retrievedNode.getId());
 			relatedItem.put("title", retrievedNode.getProperty(FieldMappings.getSystemFieldName("title")));
+			relatedItem.put("provider", retrievedNode.getProperty(FieldMappings.getSystemFieldName("provider")));
+			relatedItem.put("country", retrievedNode.getProperty(FieldMappings.getSystemFieldName("country")));
 			relatedItem.put("screenshot", retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot")));
 			relatedItem.put("type", retrievedNode.getName());
 			relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
