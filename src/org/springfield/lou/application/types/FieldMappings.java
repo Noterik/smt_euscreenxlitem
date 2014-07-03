@@ -39,6 +39,7 @@ public class FieldMappings {
         mappings.put("summaryOriginal", "summary");
         mappings.put("summaryEnglish", "summaryInEnglish");
         mappings.put("originalIdentifier", "originalIdentifier");
+        mappings.put("terms", "rightsTermsAndConditions");
     }
     
     public static HashMap<String, String> getMappings(){

@@ -1,5 +1,5 @@
 var Related = function(options){
-	console.log("Related()");
+	console.log("Related()2");
 	Component.apply(this, arguments);
 	var self = this;
 	
@@ -18,16 +18,17 @@ Related.prototype = Object.create(Component.prototype);
 Related.prototype.items = [];
 Related.prototype.atItem = 0;
 Related.prototype.setRelated = function(data){
+	console.log("Related.setRelated()");
 	this.items = JSON.parse(data).filter(function(item){
 		return item.screenshot;
 	});
 		
-	var itemsToRender = this.items.slice(this.atItem, this.atItem + 9);
+	var itemsToRender = this.items.slice(this.atItem, this.atItem + 5);
 	console.log(itemsToRender);
 	this.itemsElement.html(this.template({items: itemsToRender}));
 };
 Related.prototype.loadMoreRelated = function(){
-	this.atItem += 10;
-	var itemsToRender = this.items.slice(this.atItem, this.atItem + 9);
+	this.atItem += 5;
+	var itemsToRender = this.items.slice(this.atItem, this.atItem + 5);
 	this.itemsElement.append(this.template({items: itemsToRender}));
 };

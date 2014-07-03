@@ -716,6 +716,7 @@ body .list-group a.list-group-item:last-child {
     margin-bottom: 8px;
   }
   body .page .main .right .row .results .media-item .media-metadata .line {
+  	word-wrap: break-word;
     font-size: 1em;
     margin-bottom: 2px;
   }

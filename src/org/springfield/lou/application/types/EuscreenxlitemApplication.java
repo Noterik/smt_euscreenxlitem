@@ -81,7 +81,16 @@ public class EuscreenxlitemApplication extends Html5Application{
 			s.setProperty("mediaNode", n);
 		}
 		
+		System.out.println("Euscreenxlitem.init()");
+		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
+			loadContent(s, "footer");
+			s.putMsg("template", "", "activateTooltips()");
+		}else{
+			removeContent(s, "footer");
+		}
+		
 		setRelated(s);
+		setTerms(s);
 	}
 	
 	public void loadMoreRelated(Screen s){
@@ -151,6 +160,15 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		s.putMsg("metadata", "", "setData(" + message + ")");
 	
+	}
+	
+	private void setTerms(Screen s){
+		FsNode node = (FsNode) s.getProperty("mediaNode");
+		String terms = node.getProperty(FieldMappings.getSystemFieldName("terms"));
+		
+		JSONObject message = new JSONObject();
+		message.put("terms", terms);
+		s.putMsg("terms", "", "setText(" + message + ")");
 	}
 	
 	private void setRelated(Screen s){
