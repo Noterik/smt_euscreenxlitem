@@ -1,24 +1,30 @@
 var Template = function () {
     Page.apply(this, arguments);
     
-    this.itemTitleElement = jQuery(".navbar-header a.title");
-    this.itemOriginalTitleElement = jQuery(".basic-info .original-title");
-    this.itemProviderElement = jQuery(".basic-info .provider");
-    this.itemProductionYearElement = jQuery(".basic-info .production-year");
-    this.itemCountryProductionelement = jQuery(".basic-info .country-production");
+    this.overlayButtons = jQuery('button[data-overlay]');
+    this.overlayContents = jQuery('.overlaycontent');
     
+    var overlayButtons = this.overlayButtons;
+	var overlayContents = this.overlayContents;
+	
+	overlayButtons.each(function(){
+		var $this = jQuery(this);
+        var content = $this.attr("data-overlay");
+        $this.click(function(e){
+            e.preventDefault();
+            self = this;
+            if($(content).is(":visible")) { 
+                $(content).hide(); $(self).removeClass('active');
+            } else { 
+                $(content).show(); $(self).addClass('active');
+                overlayButtons.not(self).removeClass('active');
+                overlayContents.not($(content)).hide();
+            }
+        });
+	})
 };
 
 Template.prototype = Object.create(Page.prototype);
-Template.prototype.setData = function(data){
-	var message = JSON.parse(data);
-	
-	console.log(message);
-	
-	for(var field in message){
-		if(!message[field])
-			message[field] = "-";
-		
-		jQuery('*[data-field="' + field + '"]').text(message[field]);
-	}
-}
+Template.prototype.activateTooltips = function(){	
+	this.overlayButtons.tooltip();
+};

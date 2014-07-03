@@ -1,26 +1,35 @@
+<!-- media -->
 <script type="text/template" id="related-items-template">
-<% var c = 0; %>
-<% var i = 0; %>
-<% while((c < items.length) && (i < 5)){ %> 
+<% console.log(" LENGTH:  " + items.length); %>
+<% for (var c = 0; c < items.length; c++){ %>
 	<% var item = items[c]; %>
 	<% if(item.screenshot){ %>
-		<% i++ %>
-		<div class="row media-item" data-id="<%= item.id %>">
-			<div class="media-image col-md-12 col-xs-12 col-sm-12 col-xs-12">
-				<div class="media-wrapper">
-					<span class="title"><%= item.title %></span>
-					<img class="media-object img-responsive" alt="<%= item.title %>" src="<% if(item.screenshot){print(item.screenshot)}else{print('http://images1.noterik.com/domain/euscreen/thumbs/7/7/EUS_7724608B7F54413B9C3EAFAEFC0B072E.jpg')} %>">
-					<% if(item.type == "video"){ %>
-						<span class="media-length"><%= item.duration %></span>
-					<% } %>
-					<span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
-					<i class="media-type <%= item.type %>"></i>
-				</div>
-			</div>
+		<div class="row media-item">
+			<div class="media-image col-md-5 col-sm-5 col-xs-6">
+		        <div class="media-wrapper">
+		        	<a href="item.html?id=<%= item.id %>">
+		                <img class="media-object img-responsive" src="<% if(item.screenshot){print(item.screenshot)}else{print('http://images1.noterik.com/domain/euscreen/thumbs/7/7/EUS_7724608B7F54413B9C3EAFAEFC0B072E.jpg')} %>" alt="<%= item.title %>">
+		              	<% if(item.type == "video"){ %>
+		                <span class="media-length"><%= item.duration %></span>
+		                <% } %>
+		                <span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
+		                <i class="media-type <%= item.type %>"></i>
+		        	</a>
+		        </div>
+		    </div>
+		    <div class="media-metadata col-md-7 col-sm-7 col-xs-6">
+		        <a href="item.html?id=<%= item.id %>"><h3 class="media-heading"><%= item.title %></h3></a>
+		        <span class="line"><span class="label">By</span><span class="value"><%= item.provider %>/<%= item.country %></span></span>
+		    </div>
 		</div>
 	<% } %>
-	<% c++; %>
 <% } %>
 </script>
 <div class="items">
+</div>
+<!-- results -->
+<div class="row more">
+    <div class="more-button col-md-12">
+    	<a href="#">SHOW MORE</a>
+    </div>
 </div>

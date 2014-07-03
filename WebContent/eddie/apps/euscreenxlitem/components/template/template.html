@@ -1,133 +1,189 @@
-<div class="page desktop">
+<div class="page item desktop" id="page">
   <header id="header">
   	<!-- HEADER HERE -->
   </header>
   <div class="container main item">
-    <div class="row">
-		<div class="col-md-8 item">
-            <article>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="view-item" id="viewer">
-                           
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 meta-information">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="navbar-default">
-                                    <div class="container-fluid">
-                                        <!-- Brand and toggle get grouped for better mobile display -->
-                                        <div class="navbar-header">
-                                            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                                    data-target="#bs-example-navbar-collapse-2">
-                                                <span class="sr-only">Toggle navigation</span>
-                                                <span class="icon-bar"></span>
-                                                <span class="icon-bar"></span>
-                                                <span class="icon-bar"></span>
-                                            </button>
-                                            <a class="navbar-brand title" class="item-title" href="#" data-field="title">&nbsp;</a>
-                                        </div>
+    	<div class="row">
+    	
+	    	<!-- left -->
+	    	<div class="left col-md-8 col-sm-12">
+	    		
+	    		<!-- player -->
+	    		<div class="row">
+	    			<div class="media-player col-md-12 aspect-ratio  wide">
+	    				<div class="player" id="viewer">
+	    					
+	    				</div>
+	    			</div>
+	    		</div>
+	    		
+	    		<!-- player action -->
+	    		<div class="row">
+	    			<div class="media-action col-md-12" id="media-action">
+	    				<ul class="list-inline pull-right button-list">
+	    					
+	    					<!-- copyright button -->
+	    					<li class="copyright">
+	    						<button data-toggle="tooltip" data-placement="top" data-title="TERMS" data-overlay="#terms-content">
+	    							<i class="icono icono-copyright"></i>
+	    						</button>
 
-                                        <!-- Collect the nav links, forms, and other content for toggling -->
-                                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                                            <form class="navbar-form navbar-right">
-                                                <div class="form-group">
-                                                    <button type="button"
-                                                            data-title="TERMS"
-                                                            class="btn btn-default terms"
-                                                            data-container="body"
-                                                            data-popup="#popup-contents-terms"
-                                                            data-placement="bottom"
-                                                            data-height="70%">
-                                                        <span class="glyphicon glyphicon-copyright-mark"></span>
-                                                    </button>
-                                                    <button type="button"
-                                                            class="btn btn-default social"
-                                                            data-title="SOCIAL"
-                                                            data-container="body"
-                                                            data-popup="#popup-contents-social"
-                                                            data-placement="bottom"
-                                                            data-height="70%">
-                                                        <span class="glyphicon glyphicon-user"></span>
-                                                    </button>
-                                                    <button type="button"
-                                                            class="btn btn-default bookmark"
-                                                            data-title="BOOKMARK"
-                                                            data-container="body"
-                                                            data-popup="#popup-contents-bookmark"
-                                                            data-placement="bottom"
-                                                            data-height="70%">
-                                                        <span class="glyphicon glyphicon-star"></span>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- /.navbar-collapse -->
-                                    </div>
-                                    <!-- /.container-fluid -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row basic-info">
-                            <div class="col-md-6">
-                                <span class="label">Original title:</span><span class="value" data-field="originalTitle">&nbsp;</span><br/>
-                                <span class="label">Provider:</span><span class="value" data-field="provider">&nbsp;</span><br/>
-                                <span class="label">Production year:</span><span class="value" data-field="productionYear">&nbsp;</span><br/>
-                                <span class="label">Country of production:</span><span class="value" data-field="country">&nbsp;</span><br/>
-                            </div>
+	    						<!-- terms of use content -->
+	    						<div class="overlaycontent" id="terms-content">
+	    							<div id="terms">
+										<!-- terms component here -->
+									</div>
+								</div>
+	    					</li>
 
-                            <div class="col-md-6 description">
-                                <span class="label summary">Summary:</span>
+	    					<!-- share buttons -->
+	    					<li class="share">
+	    						<button data-toggle="tooltip" data-placement="top" data-title="SHARE" data-overlay="#share-content">
+	    							<i class="icono icono-share"></i>
+	    						</button>
 
-                                <p data-field="summary">&nbsp;</p>         
+	    						<!-- share item content -->
+	    						<div class="overlaycontent" id="share-content">
+	    							<h3>SHARE THIS ITEM</h3>
+									<ul class="list-inline">	
+										<li><a href="#" title="Share to Facebook">
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+											</span>
+										</a></li>
+										<li><a href="#" title="Share to Twitter">
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+											</span>
+										</a></li>
+										<li><a href="#" title="Share to Google +">
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+											</span>
+										</a></li>
+									</ul>
+								</div>
+	    					</li>
 
-                                <p class="series">This is part of the the series <a href="series">Best of BBC</a></p>
-                            </div>
-                            <div class="col-md-12">
-                                <button class="btn btn-default btn-sm more-info" data-toggle="collapse"
-                                        data-target="#item-more-info"><span class="glyphicon glyphicon-plus"> More info</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row more-info collapse" id="item-more-info">
-                            <div class="col-md-6">
-                                <span class="label">Clip title:</span><span class="value" data-field="clipTitle">&nbsp;</span><br/>
-                                <span class="label">Publisher/Broadcaster:</span><span class="value" data-field="publisher">&nbsp;</span><br/>
-                                <span class="label">First broadcast channel:</span><span class="value" data-field="broadcastChannel">&nbsp;</span><br/>
-                            </div>
-                            <div class="col-md-6">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sollicitudin ante
-                                ac urna consectetur, ut cursus mauris porta. Integer nec tempus urna. Morbi pulvinar
-                                blandit velit vel dignissim. Pellentesque ac dolor ut ante bibendum vehicula id vel
-                                orci. Proin at dapibus tortor. Morbi a nibh ut sapien suscipit rhoncus. Nunc
-                                hendrerit urna orci, vitae eleifend erat lobortis quis. Pellentesque scelerisque
-                                vehicula sapien. Etiam laoreet dolor nisi, et tincidunt tellus consectetur vitae.
-                                Quisque sit amet nunc turpis. Morbi dapibus mi mauris, vel pretium tortor egestas
-                                laoreet.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-        <div class="col-md-4 related">
-            <div class="row">
-                <div class="col-md-12">
-                    <aside class="related" id="related">
-                        <!-- RELATED HERE -->
-                    </aside>
-                    <div class="ad">
-                        ADVERTISEMENT
-                    </div>
-                </div>
-            </div>
-        </div>
+	    					<!-- bookmark button -->
+	    					<li class="bookmark">
+	    						<button data-toggle="tooltip" data-placement="top" data-title="ADD TO BOOKMARK" data-overlay="#bookmark-content">
+	    							<i class="icono icono-bookmark"></i>
+	    						</button>
+	    						<div class="overlaycontent" id="bookmark-content">
+
+	    							<!-- login form when user has not logged in -->
+	    							<div id="login-form" class="hidden">
+	    								<h3>SIGN IN TO BOOKMARK</h3>
+										<div class="login-form visible">
+									        <form class="login">
+								                <input id="bookmark-user-email" placeholder="Email" class="form-control" type="text"/>
+								                <input id="bookmark-user-password" placeholder="Password" class="form-control" type="password" />
+								                <input type="submit" value="LOGIN" class="btn btn-primary btn-euscreen btn-block"/>
+								            </form>
+									        <span class="extra">
+									        	<a href="forgot-password.html">Forgot password?</a> | <a href="sign-up.html">Sign up</a>
+									        </span>
+									    </div>
+									</div>
+
+									<!-- bookmark form -->
+									<div id="bookmark-form">
+	    								<h3>ADD ITEM TO</h3>
+	    								<div>
+	    									<div class="list-group">
+												<a href="#" class="list-group-item active">My first folder</a>
+												<a href="#" class="list-group-item ">My second folder</a>
+												<a href="#" class="list-group-item disabled">
+													<i class="fa fa-plus"></i> &nbsp; Add new folder 
+												</a>
+											</div>
+											<input type="submit" value="DONE" class="btn btn-primary btn-euscreen btn-block"/>
+	    								</div>
+									</div>
+								</div>
+	    					</li>
+	    				</ul>
+	    			</div>
+	    		</div>
+	    		
+	    		<!-- media metadata -->
+	    		<div class="row">
+	    			<div class="media-metadata col-md-12" id="metadata">
+	    				
+	    			</div>
+	    		</div>
+	    		
+	    		<!-- more/less button -->
+	    		<div class="row">
+	    			<div class="more-less col-md-12" id="media-metadata">
+        				<div class="more">
+        					<a data-toggle="collapse" id="show-extra-filters" data-target="#extra-metadata">SHOW MORE</a>
+        					<a data-toggle="collapse" id="hide-extra-filters" data-target="#extra-metadata">SHOW LESS</a>
+        				</div>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
+	    	<!-- right --> 
+	    	<div class="right col-md-4 col-sm-12">
+	    		
+	    		<!-- section tab (related items/discover more) -->
+	    		<div class="row">
+	    			<div class="sectiontab col-md-12">
+	    				
+			    		<!-- Nav tabs -->
+						<ul class="nav nav-tabs nav-justified">
+							<li class="active"><a href="#home" data-toggle="tab">Related Items</a></li>
+							<li><a href="#profile" data-toggle="tab">Discover More</a></li>
+						</ul>
+	    			</div>
+	    		</div>
+	    		
+				<!-- section's content -->
+	    		<div class="row">
+	    			<div class="section-content col-md-12 tab-content" id="media-related">
+
+						<!-- related items -->
+						<div class="tab-pane active media-relate" id="related">
+							<!-- related items here -->
+						</div>
+						
+						<!-- discover more -->
+						<div class="tab-pane discover-more" id="profile">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+							labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+							laboris nisi ut aliquip ex ea commodo consequat. 
+						</div>
+	    			</div>
+	    		</div>
+	    		
+	    		<!-- ads -->
+	    		<div class="row">
+	    			<div class="ads col-md-12 hidden-sm	hidden-xs">
+	        			<span class="wrap">
+	        				<a href="http://www.europeana.eu" target="_blank">
+			        			<span class="text">
+				        			VISIT EUSCREEN BLOG TO READ ABOUT THE
+				        			LATEST NEWS
+			        			</span>
+	        				</a>
+	        			</span>
+	        			<img src="/eddie/apps/euscreenxlitem/img/img-ads.gif"/>
+	        		</div>
+	    		</div>
+	    	</div>
+    	</div>
     </div>
-  </div>
   <footer id="footer">
     <!-- FOOTER HERE -->
   </footer>
+</div>
+
+<!-- nav -->
+<div id="mobilenav" class="mobilenav">
+	<!-- mobilenav contents here -->
 </div>

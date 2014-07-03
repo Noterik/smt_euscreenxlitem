@@ -1,0 +1,171 @@
+<script type="text/template" id="metadata-template">
+	<h1><%= item.title %></h1>
+
+	<!-- metadata list -->
+	<div class="row">
+		
+		<!-- left -->
+		<div class="col-md-5">
+			<div class="item">
+				<span class="header">ORIGINAL TITLE</span>
+				<span><%= item.originalTitle %></span>
+			</div>
+			<div class="item">
+				<span class="header">PROVIDER</span>
+				<span><%= item.provider %></span>
+			</div>
+			<div class="item">
+				<span class="header">PRODUCTION YEAR</span>
+				<span><%= item.year %></span>
+			</div>
+			<div class="item">
+				<span class="header">LANGUAGE</span>
+				<span><%= item.language %></span>
+			</div>
+		</div>
+		
+		<!-- right -->
+		<div class="col-md-7">
+			<div class="item">
+				<span class="header">SUMMARY</span>
+				<span>
+					<p>
+						<%= item.summaryEnglish %>
+					</p>
+					<p>
+						<%= item.summaryOriginal %>
+					</p>
+				</span>
+			</div>
+		</div>
+	</div>
+	
+	<!-- extra metadata list -->
+	<div class="row collapse" id="extra-metadata">
+		
+		<!-- left -->
+		<div class="col-md-5">
+			<div class="item">
+				<span class="header">CLIP TITLE</span>
+				<span><%= item.clipTitle %></span>
+			</div>
+			<div class="item">
+				<span class="header">PUBLISHER/BROADCASTER</span>
+				<span><%= item.publisher %></span>
+			</div>
+			<div class="item">
+				<span class="header">BROADCAST DATE</span>
+				<span><%= item.broadcastDate %></span>
+			</div>
+			<div class="item">
+				<span class="header">FIRST BROADCAST CHANNEL</span>
+				<span><%= item.broadcastChannel %></span>
+			</div>
+			<div class="item">
+				<span class="header">COUNTRY OF PRODUCTION</span>
+				<span><%= item.country %></span>
+			</div>
+			<div class="item">
+				<span class="header">ORIGINAL LANGUAGE</span>
+				<span><%= item.language %></span>
+			</div>
+			<div class="item">
+				<span class="header">SUBTITLE LANGUAGE</span>
+				<span>-</span>
+			</div>
+			<div class="item space">
+				<span class="header">GEOGRAPHICAL COVERAGE</span>
+				<span><%= item.geographicalCoverage %></span>
+			</div>
+			<div class="item space">
+				<span class="header">CONTRIBUTORS</span>
+				<span>
+					<%= item.contributors %>
+				</span>
+			</div>
+			<div class="item">
+				<span class="header">MATERIAL TYPE</span>
+				<span><%= item.materialType %></span>
+			</div>
+			<div class="item">
+				<span class="header">ITEM TYPE</span>
+				<span><%= item.itemType %></span>
+			</div>
+			<div class="item">
+				<span class="header">ITEM DURATION</span>
+				<span><%= item.duration %></span>
+			</div>
+			<div class="item">
+				<span class="header">ITEM COLOUR</span>
+				<span><%= item.itemColour %></span>
+			</div>
+			<div class="item">
+				<span class="header">ITEM SOUND</span>
+				<span><%= item.itemSound %></span>
+			</div>
+			<div class="item">
+				<span class="header">ASPECT RATIO</span>
+				<span><%= item.aspectRati %></span>
+			</div>
+			
+		</div>
+		
+		<!-- right -->
+		<div class="col-md-7">
+			<div class="item">
+				<span class="header">GENRE</span>
+				<span><%= item.genre %></span>
+			</div>
+			<div class="item">
+				<span class="header">TOPIC</span>
+				<span><%= item.topic %></span>
+			</div>
+			<div class="item">
+				<span class="header">KEYWORDS</span>
+				<span>-</span>
+			</div>
+			<div class="item space">
+				<span class="header">THESAURUS TERMS</span>
+				<span><%= item.thesaurusTerms %></span>
+			</div>
+			<div class="item">
+				<span class="header">EXTENDED DESCRIPTION</span>
+				<span>
+					<%= item.extendedDescription %>
+				</span>
+			</div>
+			<div class="item space">
+				<span class="header">FURTHER INFORMATION</span>
+				<span><%= item.furtherInformation %></span>
+			</div>
+			<div class="item">
+				<span class="header">FILENAME</span>
+				<span><%= item.filename %></span>
+			</div>
+			<div class="item">
+				<span class="header">IDENTIFIER</span>
+				<span><%= item.identifier %></span>
+			</div>
+			<div class="item">
+				<span class="header">ORIGINAL IDENTIFIER</span>
+				<span><%= item.originalIdentifier %></span>
+			</div>
+			<div class="item">
+				<span class="header">URI</span>
+				<span>-</span>
+			</div>
+			<div class="item">
+				<span class="header">RELATION</span>
+				<span>-</span>
+			</div>
+			<div class="item">
+				<span class="header">RELATION TYPE</span>
+				<span>-</span>
+			</div>
+		</div>
+	</div>
+</script>
+<div class="contents">
+	<!-- put template contents here -->
+</div>
+<!-- title of media -->
