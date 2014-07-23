@@ -1,8 +1,6 @@
 package org.springfield.lou.application.types.conditions;
 
-import java.util.Iterator;
-
-import org.springfield.lou.fs.FsNode;
+import org.springfield.fs.FsNode;
 
 public class NotCondition extends FilterCondition {
 	

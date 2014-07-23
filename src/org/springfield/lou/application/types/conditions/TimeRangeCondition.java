@@ -3,7 +3,7 @@ package org.springfield.lou.application.types.conditions;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.springfield.lou.fs.FsNode;
+import org.springfield.fs.FsNode;
 
 public class TimeRangeCondition extends FilterCondition {
 	

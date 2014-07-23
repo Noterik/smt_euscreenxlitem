@@ -1,6 +1,6 @@
 package org.springfield.lou.application.types.conditions;
 
-import org.springfield.lou.fs.FsNode;
+import org.springfield.fs.FsNode;
 
 public class EqualsCondition extends FilterCondition {
 	

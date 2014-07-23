@@ -3,7 +3,7 @@ package org.springfield.lou.application.types.conditions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springfield.lou.fs.FsNode;
+import org.springfield.fs.FsNode;
 
 public abstract class FilterCondition implements IFilterCondition {
 	

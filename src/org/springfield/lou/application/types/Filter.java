@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springfield.lou.fs.*;
+import org.springfield.fs.*;
 import org.springfield.lou.application.types.conditions.IFilterCondition;
 
 public class Filter {
