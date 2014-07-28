@@ -1,7 +1,3 @@
-#synctime{
-	display: none;
-}
+@import "/eddie/apps/euscreenxlelements/css/bootstrap.css";
+@import "/eddie/apps/euscreenxlelements/css/generic.css";
 
-.label{
-	color: #808080;
-}

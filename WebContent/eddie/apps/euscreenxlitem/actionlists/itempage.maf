@@ -1,6 +1,5 @@
 setUrlTrigger(/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
 loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
-loadStyleSheet(screen,all)
 loadStyleSheet(screen,generic) // load the generic stylesheet
 loadStylesheet(screen,specific)
 setRole(screen,"itempage")

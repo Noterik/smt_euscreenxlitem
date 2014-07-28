@@ -51,6 +51,7 @@ import org.springfield.lou.application.types.conditions.*;
 
 public class EuscreenxlitemApplication extends Html5Application{
 	
+	private boolean wantedna = true;
 	/*
 	 * Constructor for the preview application for EUScreen providers
 	 * so they can check and debug their uploaded collections.
@@ -66,6 +67,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		//refer the header and footer elements from euscreenxl element application. 
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
+		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		
 	}
 	
@@ -105,9 +107,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		System.out.println("NAME: " + name);
 		
 		if(name.equals("video")){
-			System.out.println("GET THE VIDEO!");
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
-			System.out.println("VIDEO RETRIEVED!");
 			String[] videos = rawNode.getProperty("mount").split(",");
 			JSONObject objectToSend = new JSONObject();
 			JSONArray videosArray = new JSONArray();
@@ -212,12 +212,26 @@ public class EuscreenxlitemApplication extends Html5Application{
 			relatedItem.put("title", retrievedNode.getProperty(FieldMappings.getSystemFieldName("title")));
 			relatedItem.put("provider", retrievedNode.getProperty(FieldMappings.getSystemFieldName("provider")));
 			relatedItem.put("country", retrievedNode.getProperty(FieldMappings.getSystemFieldName("country")));
-			relatedItem.put("screenshot", retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot")));
+			relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 			relatedItem.put("type", retrievedNode.getName());
 			relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
 			objectToSend.add(relatedItem);
 		}
 		
 		s.putMsg("related", "", "setRelated(" + objectToSend + ")");
+	}
+	
+	private String setEdnaMapping(String screenshot) {
+		if(screenshot != null){
+			if (!wantedna) {
+				screenshot = screenshot.replace("edna/", "");
+			} else {
+				int pos = screenshot.indexOf("edna/");
+				if 	(pos!=-1) {
+					screenshot = "http://images.euscreenxl.eu/"+screenshot.substring(pos+5);
+				}
+			}
+		}
+		return screenshot;
 	}
 }
