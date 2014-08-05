@@ -118,20 +118,50 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
 			String audio = rawNode.getProperty("mount");
+			String extension = rawNode.getProperty("extension");
+			String mimeType = "audio/mpeg";
+			if(!audio.startsWith("http://")) {
+				audio = "http://" + audio + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+				if(extension.equalsIgnoreCase("wav")) {
+					mimeType = "audio/wav";
+				} else if(extension.equalsIgnoreCase("ogg")) {
+					mimeType = "audio/ogg";
+				}
+			}
 			JSONObject objectToSend = new JSONObject();
-			objectToSend.put("audio", audio);
+			objectToSend.put("mime", mimeType);
+			objectToSend.put("audio", audio);;
 			s.putMsg("viewer", "", "setAudio(" + objectToSend + ")");
 		}else if(name.equals("picture")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
-			String picture = rawNode.getProperty("mount");
+			String rawpicture = rawNode.getProperty("mount");
+			String extension = rawNode.getProperty("extension");
+			if(!rawpicture.startsWith("http://")) {
+				rawpicture = "http://" + rawpicture + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+			} else {
+				if(rawpicture.contains("/edna")) {
+					rawpicture = rawpicture.replace("/edna", "");
+				}
+			}
+			String picture = node.getProperty(FieldMappings.getSystemFieldName("screenshot"));
+			if(picture==null) {
+				picture=rawpicture;
+			} else {
+				if(picture.contains("/edna")) {
+					picture = picture.replace("/edna", "");
+				}
+			}
 			JSONObject objectToSend = new JSONObject();
-			objectToSend.put("picture", node.getProperty(FieldMappings.getSystemFieldName("screenshot")));
-			objectToSend.put("raw", picture);
+			objectToSend.put("picture", picture);
 			objectToSend.put("alt", node.getProperty(FieldMappings.getSystemFieldName("title")));
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawdoc/1");
 			String doc = rawNode.getProperty("mount");
+			String extension = rawNode.getProperty("extension");
+			if(!doc.startsWith("http://")) {
+				doc = "http://" + doc + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("doc", doc);
 			s.putMsg("viewer", "", "setDoc(" + objectToSend + ")");

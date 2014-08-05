@@ -20,6 +20,12 @@
   top: 0;
   background: #000;
 }
+.item .main .row .left .row .media-player.aspect-ratio .player img {
+	width: 100%;
+}
+.item .main .row .left .row .media-player.aspect-ratio .player iframe {
+	border: none;
+}
 .item .main .row .left .row .media-player.aspect-ratio.wide {
   padding-bottom: 56.25%;
 }

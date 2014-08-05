@@ -29,8 +29,9 @@ Viewer.prototype.setVideo = function(data){
 Viewer.prototype.setAudio = function(data){
 	var message = JSON.parse(data);
 	var audio = message.audio;
+	var mime = message.mime;
 	var audioElement = jQuery('<audio controls="controls">')
-	var sourceElement = jQuery('<source src="' + audio + '" type="audio/mp3"></source>');
+	var sourceElement = jQuery('<source src="' + audio + '" type="' + mime + '"></source>');
 	audioElement.append(sourceElement);
 	
 	this.element.html(audioElement);
@@ -39,11 +40,9 @@ Viewer.prototype.setAudio = function(data){
 Viewer.prototype.setPicture = function(data){
 	var message = JSON.parse(data);
 	var picture = message.picture;
-	var alt = message.alt;
-	var raw = message.raw;
-	
+	var alt = message.alt;	
 	var picElement = jQuery('<a href="' + picture + '"><img src="' + picture + '" alt="' + alt +'"></a>');
-	
+
 	this.container.html(picElement);
 };
 Viewer.prototype.setDoc = function(data){
@@ -52,7 +51,7 @@ Viewer.prototype.setDoc = function(data){
 	var message = JSON.parse(data);
 	var doc = message.doc;
 	
-	var docElement = jQuery('<a href="' + doc + '">View Document!</a>');
+	var docElement = jQuery('<iframe src="http://docs.google.com/viewer?url=' + encodeURI(doc) + '&embedded=true" frameboredr="0" width="780" height="439"></iframe>');
 	
 	this.element.html(docElement);
 	this.element.addClass('non-visible');
