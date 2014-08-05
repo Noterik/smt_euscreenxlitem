@@ -102,10 +102,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 	public void startViewer(Screen s){
 		System.out.println("EuscreenxlitemApplication.startViewer()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
+				
 		String name = node.getName();
-		
-		System.out.println("NAME: " + name);
-		
+				
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
 			String[] videos = rawNode.getProperty("mount").split(",");
@@ -152,7 +151,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 			String systemName = mappings.get(readable);
 			
 			try{
-				message.put(readable, node.getProperty(FieldMappings.getSystemFieldName(readable)));
+				String value = node.getProperty(FieldMappings.getSystemFieldName(readable));
+				if(value.trim().length() > 0){
+					message.put(readable, node.getProperty(FieldMappings.getSystemFieldName(readable)));
+				}else{
+					message.put(readable, "-");
+				}
 			}catch(NullPointerException npe){
 				message.put(readable, "-");
 			}
@@ -215,6 +219,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 			relatedItem.put("type", retrievedNode.getName());
 			relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
+			
 			objectToSend.add(relatedItem);
 		}
 		
