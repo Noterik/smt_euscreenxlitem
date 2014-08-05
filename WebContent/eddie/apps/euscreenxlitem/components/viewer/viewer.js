@@ -51,7 +51,7 @@ Viewer.prototype.setDoc = function(data){
 	var message = JSON.parse(data);
 	var doc = message.doc;
 	
-	var docElement = jQuery('<iframe src="http://docs.google.com/viewer?url=' + encodeURI(doc) + '&embedded=true" frameboredr="0" width="780" height="439"></iframe>');
+	var docElement = jQuery('<object data="' + encodeURI(doc) + '#view=FitH" type="application/pdf" width="100%" height="100%"><p>It appears you don\'t have a PDF plugin for this browser. You can <a href="' + encodeURI(doc) + '">click here to download the PDF file.</a></p></object>');
 	
 	this.element.html(docElement);
 	this.element.addClass('non-visible');
