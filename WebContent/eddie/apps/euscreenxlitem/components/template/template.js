@@ -7,6 +7,10 @@ var Template = function () {
     var overlayButtons = this.overlayButtons;
 	var overlayContents = this.overlayContents;
 	
+	jQuery('.no-prod').on('click', function(){
+		alert('Functionality is not available yet');
+	});
+	
 	overlayButtons.each(function(){
 		var $this = jQuery(this);
         var content = $this.attr("data-overlay");

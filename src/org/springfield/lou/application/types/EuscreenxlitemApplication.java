@@ -52,15 +52,19 @@ import org.springfield.lou.application.types.conditions.*;
 public class EuscreenxlitemApplication extends Html5Application{
 	
 	private boolean wantedna = true;
+	private FSList providers;
+	private HashMap<String, String> countriesForProviders;
+	
 	/*
 	 * Constructor for the preview application for EUScreen providers
 	 * so they can check and debug their uploaded collections.
 	 */
 	public EuscreenxlitemApplication(String id) {
 		super(id); 
-		
 		System.out.println("EuscreenxlitemApplication()");
-				
+		
+		this.countriesForProviders = new HashMap<String, String>();
+		
 		// default scope is each screen is its own location, so no multiscreen effects
 		setLocationScope("screen"); 
 		
@@ -68,6 +72,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
+		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
 	}
 	
@@ -80,7 +85,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 		List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
 		if (nodes!=null && nodes.size()>0) {
 			FsNode n = (FsNode)nodes.get(0);
+			
+			n.getPath();
 			s.setProperty("mediaNode", n);
+		}
+		
+		if(!this.inDevelMode()){
+			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		}
 		
 		System.out.println("Euscreenxlitem.init()");
@@ -94,6 +105,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 		setRelated(s);
 		setTerms(s);
 	}
+	
+	private boolean inDevelMode() {
+    	return LazyHomer.inDeveloperMode();
+    }
 	
 	public void loadMoreRelated(Screen s){
 		System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
@@ -173,6 +188,20 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 		
+		String path = node.getPath();
+		String[] splits = path.split("/");
+		String provider = splits[4];
+		
+		if(!this.countriesForProviders.containsKey(provider)){
+			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
+			try{
+				String fullProviderString = providerNode.getProperty("birthdata");
+				this.countriesForProviders.put(provider, fullProviderString);
+			}catch(NullPointerException npe){
+				this.countriesForProviders.put(provider, node.getProperty(FieldMappings.getSystemFieldName("provider")));
+			}
+		}
+		
 		JSONObject message = new JSONObject();
 		
 		HashMap<String, String> mappings = FieldMappings.getMappings();
@@ -192,6 +221,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			}
 		}
 		
+		message.put("provider", this.countriesForProviders.get(provider));
 		s.putMsg("metadata", "", "setData(" + message + ")");
 	
 	}
@@ -206,54 +236,80 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	private void setRelated(Screen s){
-		
+		System.out.println("setReslated()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 		String topic = node.getProperty(FieldMappings.getSystemFieldName("topic"));
 		
-		String uri = "/domain/euscreenxl/user/*/*";
-		FSList fslist = FSListManager.get(uri);
-		List<FsNode> nodes = fslist.getNodes();
+		if(topic != null){
 		
-		System.out.println("SEARCH FOR: " + topic);
-		
-		AndCondition and = new AndCondition();
-		OrCondition or = new OrCondition();
-		NotCondition not = new NotCondition(new EqualsCondition("id", node.getId()));
-		
-		and.add(or);
-		and.add(not);
-		
-		String[] topics = topic.split(",");
-		for(int i = 0; i < topics.length; i++){
-			topic = topics[i];
+			String uri = "/domain/euscreenxl/user/*/*";
+			FSList fslist = FSListManager.get(uri);
+			List<FsNode> nodes = fslist.getNodes();
 			
-			or.add(new EqualsCondition(FieldMappings.getSystemFieldName("topic"), topic));
+			if(!this.inDevelMode()){
+				Filter filter = new Filter();
+				filter.addCondition(new EqualsCondition("public", "true"));
+				nodes = filter.apply(nodes);
+			}
+					
+			AndCondition and = new AndCondition();
+			OrCondition or = new OrCondition();
+			NotCondition not = new NotCondition(new EqualsCondition("id", node.getId()));
+			
+			and.add(or);
+			and.add(not);
+			
+			String[] topics = topic.split(",");
+			for(int i = 0; i < topics.length; i++){
+				topic = topics[i];
+				
+				or.add(new EqualsCondition(FieldMappings.getSystemFieldName("topic"), topic));
+			}
+			
+			Filter topicFilter = new Filter();
+			topicFilter.addCondition(and);
+			
+			JSONArray objectToSend = new JSONArray();
+			
+			List<FsNode> filteredNodes = topicFilter.apply(nodes);
+			if(filteredNodes.size() > 10){
+				nodes = filteredNodes;
+			}else{
+				nodes = nodes.subList(1, 20);
+			}
+			
+			for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
+				FsNode retrievedNode = i.next();
+				
+				String path = retrievedNode.getPath();
+				String[] splits = path.split("/");
+				String provider = splits[4];
+				
+				if(!this.countriesForProviders.containsKey(provider)){
+					FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
+					try{
+						String fullProviderString = providerNode.getProperty("birthdata");
+						this.countriesForProviders.put(provider, fullProviderString);
+					}catch(NullPointerException npe){
+						this.countriesForProviders.put(provider, retrievedNode.getProperty(FieldMappings.getSystemFieldName("provider")));
+					}
+				}
+				
+				JSONObject relatedItem = new JSONObject();
+				
+				relatedItem.put("id", retrievedNode.getId());
+				relatedItem.put("title", retrievedNode.getProperty(FieldMappings.getSystemFieldName("title")));
+				relatedItem.put("provider", this.countriesForProviders.get(provider));
+				relatedItem.put("country", retrievedNode.getProperty(FieldMappings.getSystemFieldName("country")));
+				relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
+				relatedItem.put("type", retrievedNode.getName());
+				relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
+				
+				objectToSend.add(relatedItem);
+			}
+			
+			s.putMsg("related", "", "setRelated(" + objectToSend + ")");
 		}
-		
-		Filter topicFilter = new Filter();
-		topicFilter.addCondition(and);
-		
-		JSONArray objectToSend = new JSONArray();
-		
-		nodes = topicFilter.apply(nodes);
-		
-		for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
-			FsNode retrievedNode = i.next();
-			
-			JSONObject relatedItem = new JSONObject();
-			
-			relatedItem.put("id", retrievedNode.getId());
-			relatedItem.put("title", retrievedNode.getProperty(FieldMappings.getSystemFieldName("title")));
-			relatedItem.put("provider", retrievedNode.getProperty(FieldMappings.getSystemFieldName("provider")));
-			relatedItem.put("country", retrievedNode.getProperty(FieldMappings.getSystemFieldName("country")));
-			relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
-			relatedItem.put("type", retrievedNode.getName());
-			relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
-			
-			objectToSend.add(relatedItem);
-		}
-		
-		s.putMsg("related", "", "setRelated(" + objectToSend + ")");
 	}
 	
 	private String setEdnaMapping(String screenshot) {
