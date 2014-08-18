@@ -10,11 +10,9 @@
 	    		
 	    		<!-- player -->
 	    		<div class="row">
-	    			<div class="media-player col-md-12 aspect-ratio  wide">
-	    				<div class="player" id="viewer">
-	    					
-	    				</div>
-	    			</div>
+    				<div class="player" id="viewer">
+    					
+    				</div>
 	    		</div>
 	    		
 	    		<!-- player action -->
@@ -80,7 +78,7 @@
 
 	    					<!-- bookmark button -->
 	    					<li class="bookmark">
-	    						<button class="no-prod" data-toggle="tooltip" data-placement="top" data-title="ADD TO BOOKMARK">
+	    						<button class="no-prod" data-toggle="tooltip" data-placement="top" data-title="BOOKMARK">
 	    							<i class="icono icono-bookmark"></i>
 	    						</button>
 	    						<!--
@@ -178,17 +176,18 @@
 	    		
 	    		<!-- ads -->
 	    		<div class="row">
-	    			<div class="ads col-md-12 hidden-sm	hidden-xs">
-	        			<span class="wrap">
-	        				<a href="http://blog.euscreen.eu" target="_blank">
+	    			<a href="http://blog.euscreen.eu" target="_blank">
+		    			<div class="ads col-md-12 hidden-sm	hidden-xs">
+		        			<span class="wrap">
+		        				
 			        			<span class="text">
 				        			VISIT EUSCREEN BLOG TO READ ABOUT THE
 				        			LATEST NEWS
 			        			</span>
-	        				</a>
-	        			</span>
-	        			<img src="/eddie/apps/euscreenxlelements/img/img-ads.gif"/>
-	        		</div>
+		        			</span>
+		        			<img src="/eddie/apps/euscreenxlelements/img/img-ads.gif"/>
+		        		</div>
+	        		</a>
 	    		</div>
 	    	</div>
     	</div>
@@ -196,6 +195,41 @@
   <footer id="footer" class="hidden-xs hidden-sm visible-lg visible-md ">
     <!-- FOOTER HERE -->
   </footer>
+</div>
+
+<!-- modal -->
+<div class="modal fade bs-example-modal-lg" id="image-modal" tabindex="-1" role="dialog" aria-labelledby="player-modalLabel" aria-hidden="true">
+    
+    <!-- close button -->
+    <button type="button" class="close" data-dismiss="modal"><i class="icono icono-remove"></i></button>
+    
+    <!-- modal body -->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        	
+        	<!-- modal header -->
+            <div class="modal-header">
+           		
+            	<!-- new window -->
+           		<div class="pull-right item-anchor">
+                	<a id="image-modal-nav" href="#" target="_blank">
+                		Open in new window
+                    	<i class="fa fa-external-link"></i>
+                	</a>
+                </div>
+
+                <!-- the title -->
+                <h4 class="modal-title" id="player-modalLabel">&nbsp;</h4>
+            </div>
+            
+            <!-- modal content -->
+            <div class="modal-body">
+            
+                <!-- replace with actual video player -->
+                <img src="#" id="image-modal-src" class="img-responsive"/>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- nav -->

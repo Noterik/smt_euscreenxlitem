@@ -40,6 +40,8 @@ public class FieldMappings {
         mappings.put("summaryEnglish", "summaryInEnglish");
         mappings.put("originalIdentifier", "originalIdentifier");
         mappings.put("terms", "rightsTermsAndConditions");
+        mappings.put("series", "TitleSet_TitleSetInOriginalLanguage_seriesOrCollectionTitle");
+        mappings.put("seriesEnglish", "TitleSet_TitleSetInEnglish_seriesOrCollectionTitle");
     }
     
     public static HashMap<String, String> getMappings(){

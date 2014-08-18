@@ -3,7 +3,6 @@ var Viewer = function(options){
 	Component.apply(this, arguments);
 	
 	this.element = jQuery("#viewer");
-	this.container = this.element.find('.wrapper');
 };
 
 Viewer.prototype = Object.create(Component.prototype);
@@ -13,46 +12,34 @@ Viewer.prototype.setUri = function(uri){
 	this.initializeViewer();
 };
 Viewer.prototype.setVideo = function(data){
-	console.log("Viewer.prototype.setVideo(" + message + ")");
-	var message = JSON.parse(data);
-	var videos = message.video;
-	var vidElement = jQuery('<video controls="controls"></video>');
+	console.log("Viewer.prototype.setVideo(" + data + ")");
+	var template = _.template(this.element.find('.video-template').text());
+	var video = JSON.parse(data);
 	
-	for(var i = 0; i < videos.length; i++){
-		var video = videos[i];
-		var sourceElement = jQuery('<source src="' + video + '" type="video/mp4"></source>');
-		vidElement.append(sourceElement);
-	}
-	
-	this.container.html(vidElement);
+	this.element.html(template({video: video}));	
 };
 Viewer.prototype.setAudio = function(data){
-	var message = JSON.parse(data);
-	var audio = message.audio;
-	var mime = message.mime;
-	var audioElement = jQuery('<audio controls="controls">')
-	var sourceElement = jQuery('<source src="' + audio + '" type="' + mime + '"></source>');
-	audioElement.append(sourceElement);
+	var template = _.template(this.element.find('.audio-template').text());
+	var audio = JSON.parse(data);
 	
-	this.element.html(audioElement);
-	this.element.addClass('non-visible');
+	this.element.html(template({audio: audio}));
 };
 Viewer.prototype.setPicture = function(data){
-	var message = JSON.parse(data);
-	var picture = message.picture;
-	var alt = message.alt;	
-	var picElement = jQuery('<a href="' + picture + '"><img src="' + picture + '" alt="' + alt +'"></a>');
+	var template = _.template(this.element.find('.picture-template').text());
+	var picture = JSON.parse(data);
 
-	this.container.html(picElement);
+	this.element.html(template({picture: picture}));
+	$('.image-player a').click(function (e) {
+		console.log("CLICK!!!");
+        $('#image-modal #image-modal-src').attr('src', $(this).attr('data-img-url'));
+        $('#image-modal #image-modal-nav').attr('href', $(this).attr('data-img-url'));
+    });
 };
 Viewer.prototype.setDoc = function(data){
-	console.log("SET DOC!!!!!");
-	console.log(data);
-	var message = JSON.parse(data);
-	var doc = message.doc;
+	var template = _.template(this.element.find('.doc-template').text());
+	var doc = JSON.parse(data);
 	
-	var docElement = jQuery('<object data="' + encodeURI(doc) + '#view=FitH" type="application/pdf" width="100%" height="100%"><p>It appears you don\'t have a PDF plugin for this browser. You can <a href="' + encodeURI(doc) + '">click here to download the PDF file.</a></p></object>');
+	console.log(doc);
 	
-	this.element.html(docElement);
-	this.element.addClass('non-visible');
+	this.element.html(template({doc: doc}));
 };

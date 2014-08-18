@@ -20,33 +20,23 @@
 */
 package org.springfield.lou.application.types;
 
-import java.io.BufferedReader;
-import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Namespace;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.*;
-import java.util.Map.Entry;
-
+import org.springfield.fs.FSList;
+import org.springfield.fs.FSListManager;
+import org.springfield.fs.Fs;
+import org.springfield.fs.FsNode;
 import org.springfield.lou.application.Html5Application;
-import org.springfield.lou.application.Html5ApplicationInterface;
-import org.springfield.lou.application.components.BasicComponent;
-import org.springfield.lou.application.components.ComponentInterface;
+import org.springfield.lou.application.types.conditions.AndCondition;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
+import org.springfield.lou.application.types.conditions.NotCondition;
+import org.springfield.lou.application.types.conditions.OrCondition;
 import org.springfield.lou.homer.LazyHomer;
-import org.springfield.fs.*;
 import org.springfield.lou.screen.Screen;
-import org.springfield.lou.application.types.Filter;
-import org.springfield.lou.application.types.conditions.*;
 
 
 public class EuscreenxlitemApplication extends Html5Application{
@@ -119,15 +109,29 @@ public class EuscreenxlitemApplication extends Html5Application{
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 				
 		String name = node.getName();
-				
+						
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
 			String[] videos = rawNode.getProperty("mount").split(",");
 			JSONObject objectToSend = new JSONObject();
-			JSONArray videosArray = new JSONArray();
-			objectToSend.put("video", videosArray);
+			JSONArray sourcesArray = new JSONArray();
+			String extension = rawNode.getProperty("extension");
+			objectToSend.put("screenshot",node.getProperty(FieldMappings.getSystemFieldName("screenshot")));
+			objectToSend.put("aspectRatio", node.getProperty(FieldMappings.getSystemFieldName("aspectRatio")));
+			objectToSend.put("sources", sourcesArray);
+				
 			for(int i = 0; i < videos.length; i++){
-				videosArray.add(videos[i]);
+				JSONObject src = new JSONObject();
+				String video = videos[i];
+				
+				if (video.indexOf("http://")==-1) {
+					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw."+ extension;
+				}
+				
+				String mime = "video/mp4";
+				src.put("src", video);
+				src.put("mime", mime);
+				sourcesArray.add(src);
 			}
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
 		}else if(name.equals("audio")){
@@ -167,7 +171,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				}
 			}
 			JSONObject objectToSend = new JSONObject();
-			objectToSend.put("picture", picture);
+			objectToSend.put("src", picture);
 			objectToSend.put("alt", node.getProperty(FieldMappings.getSystemFieldName("title")));
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
@@ -178,7 +182,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				doc = "http://" + doc + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 			}
 			JSONObject objectToSend = new JSONObject();
-			objectToSend.put("doc", doc);
+			objectToSend.put("src", doc);
 			s.putMsg("viewer", "", "setDoc(" + objectToSend + ")");
 		}
 	}
@@ -220,6 +224,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 				message.put(readable, "-");
 			}
 		}
+		
+		message.put("type", node.getName());
 		
 		message.put("provider", this.countriesForProviders.get(provider));
 		s.putMsg("metadata", "", "setData(" + message + ")");
@@ -304,6 +310,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 				relatedItem.put("type", retrievedNode.getName());
 				relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
+				relatedItem.put("language", retrievedNode.getProperty(FieldMappings.getSystemFieldName("language")));
 				
 				objectToSend.add(relatedItem);
 			}

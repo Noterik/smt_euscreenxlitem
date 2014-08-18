@@ -135,6 +135,7 @@
 		<war destfile="${package.location.war}" webxml="${webcontent.dir}/WEB-INF/web.xml">
 			<fileset dir="${webcontent.dir}">
 			 <exclude name="WEB-INF/lib/lou.jar" />
+			 <exclude name="WEB-INF/lib/mojo.jar" />
 			 <exclude name="WEB-INF/lib/springfield-tools.jar" />
 		     <exclude name="WEB-INF/lib/c*" />
 			 <exclude name="WEB-INF/lib/x*" />
