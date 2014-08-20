@@ -36,6 +36,6 @@
 
 <script type="text/template" class="doc-template">
 	<div class="media-player col-md-12 aspect-ratio normal">
-		<object data="<%= doc.src %>#view=FitH" type="application/pdf" width="100%" height="100%"><p>It appears you don\'t have a PDF plugin for this browser. You can <a href="<%= doc.src %>">click here to download the PDF file.</a></p></object>
+		<iframe src="/eddie/apps/euscreenxlelements/libs/ViewerJS/#<%= doc.src %>" width='100%' height='100%' allowfullscreen webkitallowfullscreen></iframe>
 	</div>
 </script>

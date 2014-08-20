@@ -33,7 +33,7 @@ public class FieldMappings {
         mappings.put("extendedDescription", "extendedDescription");
         mappings.put("filename", "filename");
         mappings.put("identifier", "identifier");
-        mappings.put("contributors", "contributer");
+        mappings.put("contributors", "contributor");
         mappings.put("aspectRatio", "TechnicalInformation_aspectRatio");
         mappings.put("furtherInformation", "information");
         mappings.put("summaryOriginal", "summary");

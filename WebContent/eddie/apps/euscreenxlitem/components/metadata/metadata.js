@@ -22,9 +22,8 @@ var Metadata = function(options){
 Metadata.prototype = Object.create(Component.prototype);
 Metadata.prototype.setData = function(message){
 	var data = JSON.parse(message);
-	
-	console.log(this.element.find('#' + data.type + '-template')[0]);
-	
+	console.log(data);
+		
 	var template = _.template(this.element.find('#' + data.type + '-template').text())
 	this.contents.html(template({item: data}));
 }
