@@ -63,6 +63,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("footer", "/euscreenxlelements/footer");
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
+		this.addReferid("warning", "/euscreenxlelements/warning");
 		
 	}
 	
@@ -305,9 +306,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 				
 				relatedItem.put("id", retrievedNode.getId());
 				relatedItem.put("title", retrievedNode.getProperty(FieldMappings.getSystemFieldName("title")));
+				relatedItem.put("originalTitle", retrievedNode.getProperty(FieldMappings.getSystemFieldName("originalTitle")));
 				relatedItem.put("provider", this.countriesForProviders.get(provider));
 				relatedItem.put("country", retrievedNode.getProperty(FieldMappings.getSystemFieldName("country")));
 				relatedItem.put("screenshot", setEdnaMapping(retrievedNode.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
+				relatedItem.put("year", retrievedNode.getProperty(FieldMappings.getSystemFieldName("year")));
 				relatedItem.put("type", retrievedNode.getName());
 				relatedItem.put("duration", retrievedNode.getProperty(FieldMappings.getSystemFieldName("duration")));
 				relatedItem.put("language", retrievedNode.getProperty(FieldMappings.getSystemFieldName("language")));

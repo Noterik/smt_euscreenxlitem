@@ -1,4 +1,5 @@
 var Template = function () {
+	console.log("Template()");
     Page.apply(this, arguments);
     
     this.overlayButtons = jQuery('button[data-overlay]');
@@ -6,10 +7,6 @@ var Template = function () {
     
     var overlayButtons = this.overlayButtons;
 	var overlayContents = this.overlayContents;
-	
-	jQuery('.no-prod').on('click', function(){
-		alert('Functionality is not available yet');
-	});
 	
 	overlayButtons.each(function(){
 		var $this = jQuery(this);
@@ -25,10 +22,12 @@ var Template = function () {
                 overlayContents.not($(content)).hide();
             }
         });
-	})
+	});
+	
 };
 
 Template.prototype = Object.create(Page.prototype);
 Template.prototype.activateTooltips = function(){	
+	console.log("ACTIVATE TOOLTIPS!!!");
 	this.overlayButtons.tooltip();
 };

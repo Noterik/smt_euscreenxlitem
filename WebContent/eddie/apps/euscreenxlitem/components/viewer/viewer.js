@@ -38,8 +38,14 @@ Viewer.prototype.setPicture = function(data){
 Viewer.prototype.setDoc = function(data){
 	var template = _.template(this.element.find('.doc-template').text());
 	var doc = JSON.parse(data);
-	
-	console.log(doc);
-	
+		
 	this.element.html(template({doc: doc}));
+	
+	var self = this;
+	setTimeout(function(){
+		var height = jQuery("#viewer").height();
+		if(height > 100)
+			self.element.find(".media-player iframe").height(height);
+	}, 250);
+	
 };
