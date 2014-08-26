@@ -1,0 +1,37 @@
+<!-- media -->
+<script type="text/template" id="related-items-template">
+<% for (var c = 0; c < items.length; c++){ %>
+	<% var item = items[c]; %>
+	<% if(item.screenshot){ %>
+		<div class="row media-item">
+			<div class="media-image col-md-6 col-sm-5 col-xs-6">
+		        <div class="media-wrapper">
+		        	<a href="item.html?id=<%= item.id %>">
+		                <img class="media-object img-responsive" src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" alt="<%= item.title %>">
+		              	<% if(item.type == "video"){ %>
+		                <span class="media-length"><%= item.duration %></span>
+		                <% } %>
+		                <span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
+		                <i class="media-type <%= item.type %>"></i>
+		        	</a>
+		        </div>
+		    </div>
+		    <div class="media-metadata col-md-6 col-sm-7 col-xs-6">
+		        <a href="item.html?id=<%= item.id %>"><h3 class="media-heading"><%= item.title %></h3></a>
+		        <span class="line visible-sm"><span class="label">Original Title: </span><span class="value"><%= item.originalTitle %></span></span>
+		        <span class="line"><span class="label">Provider: </span><span class="value"><%= item.provider %></span></span>
+		        <span class="line visible-sm"><span class="label">Year: </span><span class="value"><%= item.year %></span></span>
+		        <span class="line"><span class="label">Language: </span><span class="value"><%= item.language %></span></span>
+		    </div>
+		</div>
+	<% } %>
+<% } %>
+</script>
+<div class="items">
+</div>
+<!-- results -->
+<div class="row more">
+    <div class="more-button col-md-12">
+    	<a href="#">SHOW MORE</a>
+    </div>
+</div>

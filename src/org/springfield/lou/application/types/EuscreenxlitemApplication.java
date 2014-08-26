@@ -238,8 +238,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String terms = node.getProperty(FieldMappings.getSystemFieldName("terms"));
 		
 		JSONObject message = new JSONObject();
-		message.put("terms", terms);
-		s.putMsg("terms", "", "setText(" + message + ")");
+		message.put("copyright", terms);
+		s.putMsg("copyright", "", "setText(" + message + ")");
 	}
 	
 	private void setRelated(Screen s){

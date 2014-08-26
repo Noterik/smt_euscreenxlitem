@@ -1,8 +1,6 @@
 setUrlTrigger(/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
-loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
-loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStyleSheet(screen,euscreenxlelements/generic)
 loadStylesheet(screen,specific)
-loadStylesheet(screen,additions)
 setRole(screen,"itempage")
 loadContent(screen,template)
 loadContent(screen,header)
@@ -10,7 +8,7 @@ loadContent(screen,footer)
 loadContent(screen,viewer)
 loadContent(screen,related)
 loadContent(screen,metadata)
-loadContent(screen,terms)
+loadContent(screen,copyright)
 loadContent(screen,mobilenav)
 loadContent(screen,linkinterceptor)
 loadContent(screen,warning)
