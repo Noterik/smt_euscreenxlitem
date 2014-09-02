@@ -65,6 +65,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
 		
+		this.addReferidCSS("elements", "/euscreenxlelements/generic");
+		
 	}
 	
 	public void init(Screen s){
