@@ -64,6 +64,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
+		this.addReferid("favicon", "/euscreenxlelements/favicon");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		
