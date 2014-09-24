@@ -64,7 +64,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
-		this.addReferid("favicon", "/euscreenxlelements/favicon");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		
@@ -99,6 +98,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 		setRelated(s);
 		setTerms(s);
 	}
+	
+	public String getFavicon() {
+        return "/eddie/apps/euscreenxlelements/img/favicon.png";
+    }
 	
 	private boolean inDevelMode() {
     	return LazyHomer.inDeveloperMode();

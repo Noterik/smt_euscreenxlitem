@@ -1,4 +1,3 @@
-loadContent(screen,favicon)
 loadStyleSheet(screen,euscreenxlelements/generic)
 loadStylesheet(screen,specific)
 setRole(screen,"itempage")

@@ -1,4 +1,3 @@
-loadContent(screen,favicon)
 setUrlTrigger(/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
 loadStylesheet(screen,elements)
 loadStylesheet(screen,specific)
