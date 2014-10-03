@@ -42,6 +42,7 @@ public class FieldMappings {
         mappings.put("terms", "rightsTermsAndConditions");
         mappings.put("series", "TitleSet_TitleSetInOriginalLanguage_seriesOrCollectionTitle");
         mappings.put("seriesEnglish", "TitleSet_TitleSetInEnglish_seriesOrCollectionTitle");
+        mappings.put("lastBroadCastDate", "SpatioTemporalInformation_TemporalInformation_lastBroadCastDate");
     }
     
     public static HashMap<String, String> getMappings(){
