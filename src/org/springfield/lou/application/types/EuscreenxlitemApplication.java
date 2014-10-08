@@ -84,6 +84,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 			
 			n.getPath();
 			s.setProperty("mediaNode", n);
+			
+			JSONObject socialSettings = new JSONObject();
+			socialSettings.put("text", n.getProperty(FieldMappings.getSystemFieldName("originalTitle")));
+			
+			s.putMsg("social", "", "setSharingSettings(" + socialSettings + ")");
 		}
 		
 		if(!this.inDevelMode()){
