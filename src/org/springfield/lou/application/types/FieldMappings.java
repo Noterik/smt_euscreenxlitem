@@ -43,6 +43,10 @@ public class FieldMappings {
         mappings.put("series", "TitleSet_TitleSetInOriginalLanguage_seriesOrCollectionTitle");
         mappings.put("seriesEnglish", "TitleSet_TitleSetInEnglish_seriesOrCollectionTitle");
         mappings.put("lastBroadCastDate", "SpatioTemporalInformation_TemporalInformation_lastBroadCastDate");
+        mappings.put("landingPageURL", "landingPageURL");
+        mappings.put("digitalItemURL", "digitalItemURL");
+        mappings.put("episodeNumber", "episodeNumber");
+        mappings.put("seasonNumber", "seasonNumber");
     }
     
     public static HashMap<String, String> getMappings(){

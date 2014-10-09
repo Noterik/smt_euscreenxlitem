@@ -1,11 +1,56 @@
-<script id="copyright-template" type="text/template">
-<h3>TERMS OF USE</h3>
-<p>
-	<%= copyright %>
-</p>
-<p>
-	<a href="#">Contact the provider</a>
-</p>
-</script>
 <div class="contents">
 </div>
+<script type="text/template" id="terms-of-use-template">
+	<div id="terms-of-use">
+		<!-- title -->
+		<h3>TERMS OF USE</h3>
+		<p>
+			<%= data.copyright %>
+	   	</p>
+
+	    <!-- toggle button -->
+	    <p>
+	   		<a class="switch-action" href="#media-action" id="contact-button">Contact the provider</a>
+	    </p>
+	</div>
+	<div id="contact-provider" style="display:none;" >
+
+		<!-- title -->
+		<h3>CONTACT PROVIDER</h3>
+		<p>
+			Please fill in the form below to contact the provider of this item.
+			A copy of the message will be sent to the email address that you provide in the form
+		</p>
+
+		<!-- contact form -->
+		<form class="contact-provider-form">
+			
+			<!-- info -->
+			<div class="form-group">
+		    	<label>IDENTIFIER</label>
+		    	<span>EUS_8D4A3D3653D74EA4A984470E9E6A0E4B</span>
+		    	<input type="hidden" name="identifier" value="<%= copyright.id %>">
+		  	</div>
+		  	<div class="form-group">
+		    	<label>TITLE</label>
+		    	<span>The state of the world</span>
+		    	<input type="hidden" name="title" value="<%= copyright.title %>">
+		  	</div>
+
+		  	<!-- user input -->
+		  	<div class="form-group space">
+				<input type="email" class="form-control" id="input-email" placeholder="Your email">
+			  	<input type="text" class="form-control" id="input-subject" placeholder="Subject">
+			  	<textarea class="form-control" id="input-message" placeholder="Message"></textarea>
+			</div>
+
+			<!-- submit -->
+		  	<button type="submit" class="btn btn-euscreen">SUBMIT</button>
+		</form>
+
+		<!-- back button -->
+	    <p>
+	   		<a class="switch-action" href="#media-action" id="terms-button">Back to terms of use</a>
+	    </p>
+	</div>
+</script>

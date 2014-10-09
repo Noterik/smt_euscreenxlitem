@@ -8,7 +8,7 @@ var Social = function(options){
     this.$facebookButton = jQuery('#button-facebook');
     this.$googleButton = jQuery('#button-google');
     
-    
+    this.urlChanged();
 };
 Social.prototype = Object.create(Component.prototype);
 Social.prototype.urlChanged = function(){
