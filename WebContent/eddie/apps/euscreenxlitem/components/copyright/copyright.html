@@ -24,28 +24,29 @@
 
 		<!-- contact form -->
 		<form class="contact-provider-form">
-			
+			<input type="hidden" name="provider" value="<%= data.provider %>">
 			<!-- info -->
 			<div class="form-group">
 		    	<label>IDENTIFIER</label>
-		    	<span>EUS_8D4A3D3653D74EA4A984470E9E6A0E4B</span>
-		    	<input type="hidden" name="identifier" value="<%= copyright.id %>">
+		    	<span><%= data.id %></span>
+		    	<input type="hidden" name="identifier" value="<%= data.id %>">
 		  	</div>
 		  	<div class="form-group">
 		    	<label>TITLE</label>
-		    	<span>The state of the world</span>
-		    	<input type="hidden" name="title" value="<%= copyright.title %>">
+		    	<span><%= data.title %></span>
+		    	<input type="hidden" name="title" value="<%= data.title %>">
 		  	</div>
 
 		  	<!-- user input -->
 		  	<div class="form-group space">
-				<input type="email" class="form-control" id="input-email" placeholder="Your email">
-			  	<input type="text" class="form-control" id="input-subject" placeholder="Subject">
-			  	<textarea class="form-control" id="input-message" placeholder="Message"></textarea>
+				<input type="email" class="form-control" id="input-email" placeholder="Your email" name="email">
+			  	<input type="text" class="form-control" id="input-subject" placeholder="Subject" name="subject">
+			  	<textarea class="form-control" id="input-message" placeholder="Message" name="message"></textarea>
 			</div>
 
 			<!-- submit -->
 		  	<button type="submit" class="btn btn-euscreen">SUBMIT</button>
+		  	<span id="mailresponse"></span>
 		</form>
 
 		<!-- back button -->

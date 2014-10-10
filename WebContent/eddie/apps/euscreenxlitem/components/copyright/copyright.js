@@ -24,4 +24,24 @@ Copyright.prototype.setText = function(message){
 			contactProvider.hide();
 		}
 	});
+	
+	//Submit the form
+	this.container.find('.btn-euscreen').on('click', function(event) {
+		event.preventDefault();
+		$('#mailresponse').empty();
+		var $form = $(this).parent();
+		var data = {};
+		$.each($form.serializeArray(), function(i, field) {
+    		data[field.name] = field.value;
+		});
+		
+		eddie.putLou("", "sendmail(" + JSON.stringify(data) + ")");
+		return false;
+	});
+}
+Copyright.prototype.showMailResponse = function(response){
+	var self = this;
+	var data = JSON.parse(response);
+	
+	$('#mailresponse').html(data.message);
 }

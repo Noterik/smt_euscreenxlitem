@@ -183,3 +183,9 @@
 .modal .modal-dialog .modal-body img {
   display: inline-block;
 }
+.contact-provider-form .mailsuccess {
+	color: green;
+}
+.contact-provider-form .mailerror {
+	color: red;
+}
