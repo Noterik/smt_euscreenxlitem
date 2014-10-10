@@ -14,13 +14,21 @@ var Template = function () {
         $this.click(function(e){
             e.preventDefault();
             self = this;
+            
             if($(content).is(":visible")) { 
                 $(content).hide(); $(self).removeClass('active');
             } else { 
+            	jQuery(".overlaycontent").hide();
                 $(content).show(); $(self).addClass('active');
                 overlayButtons.not(self).removeClass('active');
                 overlayContents.not($(content)).hide();
+                
+                if($(this).data('title') == "SHARE"){
+                	jQuery(".permalink input").focus();
+                	jQuery(".permalink input").select();
+                }
             }
+            
         });
 	});
 	
