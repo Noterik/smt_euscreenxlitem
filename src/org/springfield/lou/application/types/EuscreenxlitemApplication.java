@@ -271,6 +271,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 		message.put("copyright", terms);
 		message.put("id", node.getId());
 		message.put("provider", provider_user);
+		String path = node.getPath();
+		String[] splits = path.split("/");
+		String provider = splits[4];
+		message.put("providerReadable", this.countriesForProviders.get(provider));
 		message.put("title", node.getProperty(FieldMappings.getSystemFieldName("title")));
 		s.putMsg("copyright", "", "setText(" + message + ")");
 	}
