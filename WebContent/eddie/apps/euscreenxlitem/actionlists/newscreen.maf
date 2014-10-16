@@ -19,5 +19,15 @@ loadContent(screen,warning)
 loadContent(screen,videocopyright)
 loadContent(screen,ads)
 callServer(init,screen)
+
+.when device=iphone
+callServer(setDeviceMobile,screen)
+
+.when device=ipad
+callserver(setDeviceIpad,screen)
+
+.when device=aphone
+callServer(setDeviceMobile,screen)
+
 callServer(startViewer,screen)
 callServer(setMetadata,screen)

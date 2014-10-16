@@ -135,6 +135,22 @@ public class EuscreenxlitemApplication extends Html5Application{
 		System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
 	}
 	
+	public void setDeviceMobile(Screen s){
+		JSONObject params = new JSONObject();
+		params.put("device", "mobile");
+		s.putMsg("viewer", "", "setDevice(" + params + ")");
+		s.putMsg("template", "", "setDevice(" + params + ")");
+		s.putMsg("social", "", "setDevice(" + params + ")");
+	}
+	
+	public void setDeviceIpad(Screen s){
+		JSONObject params = new JSONObject();
+		params.put("device", "ipad");
+		s.putMsg("viewer", "", "setDevice(" + params + ")");
+		s.putMsg("template", "", "setDevice(" + params + ")");
+		s.putMsg("social", "", "setDevice(" + params + ")");
+	}
+	
 	public void startViewer(Screen s){
 		System.out.println("EuscreenxlitemApplication.startViewer()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
@@ -147,7 +163,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			JSONObject objectToSend = new JSONObject();
 			JSONArray sourcesArray = new JSONArray();
 			String extension = rawNode.getProperty("extension");
-			objectToSend.put("screenshot",node.getProperty(FieldMappings.getSystemFieldName("screenshot")));
+			objectToSend.put("screenshot",this.setEdnaMapping(node.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 			objectToSend.put("aspectRatio", node.getProperty(FieldMappings.getSystemFieldName("aspectRatio")));
 			objectToSend.put("sources", sourcesArray);
 				

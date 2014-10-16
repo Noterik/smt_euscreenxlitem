@@ -7,7 +7,7 @@
 			<div class="media-image col-md-6 col-sm-5 col-xs-6">
 		        <div class="media-wrapper">
 		        	<a href="item.html?id=<%= item.id %>">
-		                <img class="media-object img-responsive" src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" alt="<%= item.title %>">
+		                <img class="media-object img-responsive" src="<% if(item.screenshot){print(item.screenshot + '?script=euscreen320t')}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" alt="<%= item.title %>">
 		              	<% if(item.type == "video"){ %>
 		                <span class="media-length"><%= item.duration %></span>
 		                <% } %>

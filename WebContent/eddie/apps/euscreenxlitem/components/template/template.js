@@ -1,5 +1,7 @@
 var Template = function () {
 	console.log("Template()");
+	var self = this;
+	this.device = "desktop";
     Page.apply(this, arguments);
     
     this.overlayButtons = jQuery('button[data-overlay]');
@@ -8,24 +10,26 @@ var Template = function () {
     var overlayButtons = this.overlayButtons;
 	var overlayContents = this.overlayContents;
 	
+	var self = this;
+	
 	overlayButtons.each(function(){
 		var $this = jQuery(this);
         var content = $this.attr("data-overlay");
         $this.click(function(e){
             e.preventDefault();
-            self = this;
+            var element = this;
             
             if($(content).is(":visible")) { 
-                $(content).hide(); $(self).removeClass('active');
+                $(content).hide(); $(element).removeClass('active');
             } else { 
             	jQuery(".overlaycontent").hide();
-                $(content).show(); $(self).addClass('active');
-                overlayButtons.not(self).removeClass('active');
+                $(content).show(); $(element).addClass('active');
+                overlayButtons.not().removeClass('active');
                 overlayContents.not($(content)).hide();
                 
-                if($(this).data('title') == "SHARE"){
-                	jQuery(".permalink input").focus();
-                	jQuery(".permalink input").select();
+                if($(this).data('title') == "SHARE" && self.device == "desktop"){
+            		jQuery(".permalink input").focus();
+            		jQuery(".permalink input").select();
                 }
             }
             
@@ -35,6 +39,11 @@ var Template = function () {
 };
 
 Template.prototype = Object.create(Page.prototype);
+Template.prototype.setDevice = function(data){
+	var data = JSON.parse(data);
+	
+	this.device = data.device;
+};
 Template.prototype.activateTooltips = function(){	
 	console.log("ACTIVATE TOOLTIPS!!!");
 	this.overlayButtons.tooltip();

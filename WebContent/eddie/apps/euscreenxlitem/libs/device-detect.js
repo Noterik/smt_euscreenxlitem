@@ -4,12 +4,16 @@ var DeviceDetect = function () {
     var detectDeviceContext = function () {
         var mobileMediaQuery = "(min-device-width : 320px) and (max-device-width : 480px)";
         var tabletMediaQuery = "(min-device-width: 768px) and (max-device-width: 1024px)";
-        if (window.matchMedia(mobileMediaQuery).matches) {
-            device = "mobile";
-        } else if (window.matchMedia(tabletMediaQuery).matches) {
-            device = "tablet";
-        } else {
-            device = "desktop";
+        if(window.matchMedia){
+	        if (window.matchMedia(mobileMediaQuery).matches) {
+	            device = "mobile";
+	        } else if (window.matchMedia(tabletMediaQuery).matches) {
+	            device = "tablet";
+	        } else {
+	            device = "desktop";
+	        }
+        }else{
+        	device = "desktop";
         }
     };
 
