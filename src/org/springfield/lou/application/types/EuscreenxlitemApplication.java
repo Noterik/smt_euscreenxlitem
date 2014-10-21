@@ -109,6 +109,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		if(!this.inDevelMode()){
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
+			s.putMsg("template", "", "hideBookmarking()");
 		}
 		
 		System.out.println("Euscreenxlitem.init()");
