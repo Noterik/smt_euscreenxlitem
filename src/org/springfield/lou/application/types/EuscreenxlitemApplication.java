@@ -404,8 +404,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		
 		if(errors) {
-			mailResponse.put("status", "error");
-			mailResponse.put("message", "<span class=\"mailerror\">Please fill in all the fields.</span>");
+			mailResponse.put("status", "false");
+			mailResponse.put("message", "Please fill in all the fields.");
 			s.putMsg("copyright", "", "showMailResponse(" + mailResponse + ")");
 			return;
 		}
@@ -457,8 +457,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 			success = false;
 		}
 		
-		String response = "<span class=\"mailsuccess\">Your message has been successfuly sent.</span>";
-		if(!success) response = "<span class=\"mailerror\">There was a problem sending your mail.<br/>Please try again later.</span>";
+		String response = "Your message has been successfuly sent.";
+		if(!success) response = "There was a problem sending your mail.<br/>Please try again later.";
 		
 		mailResponse.put("status", Boolean.toString(success));
 		mailResponse.put("message", response);

@@ -28,6 +28,7 @@ Copyright.prototype.setText = function(message){
 	//Submit the form
 	this.container.find('.btn-euscreen').on('click', function(event) {
 		event.preventDefault();
+		$('#mailresponse').parent().removeClass('form-error').removeClass('form-sent');
 		$('#mailresponse').empty();
 		var $form = $(this).parent();
 		var data = {};
@@ -43,6 +44,10 @@ Copyright.prototype.setText = function(message){
 Copyright.prototype.showMailResponse = function(response){
 	var self = this;
 	var data = JSON.parse(response);
-	
+	if(data.status=='false') {
+		$('#mailresponse').parent().addClass('form-error');
+	} else {
+		$('#mailresponse').parent().addClass('form-sent');
+	}
 	$('#mailresponse').html(data.message);
 }

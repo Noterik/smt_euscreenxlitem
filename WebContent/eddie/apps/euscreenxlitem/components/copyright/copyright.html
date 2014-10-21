@@ -19,7 +19,7 @@
 		<h3>CONTACT PROVIDER</h3>
 		<p>
 			Please fill in the form below to contact the provider of this item.
-			A copy of the message will be sent to the email address that you provide in the form
+			A copy of the message will be sent to your email address.
 		</p>
 
 		<!-- contact form -->
@@ -28,12 +28,12 @@
 			<!-- info -->
 			<div class="form-group">
 		    	<label>TITLE</label>
-		    	<span>The state of the world</span>
+		    	<span><%= data.title %></span>
 		    	<input type="hidden" name="title" value="<%= data.title %>">
 		  	</div>
 			<div class="form-group">
 		    	<label>IDENTIFIER</label>
-		    	<span>EUS_8D4A3D3653D74EA4A984470E9E6A0E4B</span>
+		    	<span><%= data.id %></span>
 		    	<input type="hidden" name="identifier" value="<%= data.id %>">
 		  	</div>
 		  	<div class="form-group">
@@ -43,23 +43,22 @@
 
 		  	<!-- user input -->
 		  	<div class="form-group space">
-				<input type="email" class="form-control" id="input-email" placeholder="Your email">
-			  	<input type="text" class="form-control" id="input-subject" placeholder="Subject">
-			  	<textarea class="form-control" id="input-message" placeholder="Message"></textarea>
+				<input type="email" class="form-control" id="input-email" placeholder="Your email" name="email">
+			  	<input type="text" class="form-control" id="input-subject" placeholder="Subject" name="subject">
+			  	<textarea class="form-control" id="input-message" placeholder="Message" name="message"></textarea>
 			</div>
 
 			<!-- submit -->
 		  	<button type="button" class="btn btn-euscreen" id="btn-submit-contact" data-loading-text="SENDING...">SUBMIT</button>
 		  	
 		  	<!-- notification -->
-		  	<div class="form-notification">
-		  		Your message has been succesfully sent.
+		  	<div class="form-notification" id="mailresponse">
 		  	</div>
 		</form>
 
 		<!-- back button -->
 	    <p>
-	   		<a href="#media-action" id="terms-button">Back to terms of use</a>
+	   		<a class="switch-action" href="#media-action" id="terms-button">Back to terms of use</a>
 	    </p>
 	</div>
 </script>
