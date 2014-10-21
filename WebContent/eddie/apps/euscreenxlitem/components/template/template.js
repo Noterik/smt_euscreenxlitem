@@ -48,3 +48,7 @@ Template.prototype.activateTooltips = function(){
 	console.log("ACTIVATE TOOLTIPS!!!");
 	this.overlayButtons.tooltip();
 };
+Template.prototype.hideBookmarking = function(){
+	console.log("Template.prototype.hideBookmarking()");
+	jQuery("li.bookmark").hide();
+}
