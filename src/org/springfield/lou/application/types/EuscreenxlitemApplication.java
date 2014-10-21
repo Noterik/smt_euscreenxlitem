@@ -178,6 +178,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				String mime = "video/mp4";
 				src.put("src", video);
 				src.put("mime", mime);
+
 				sourcesArray.add(src);
 			}
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
@@ -196,7 +197,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("mime", mimeType);
-			objectToSend.put("audio", audio);;
+			objectToSend.put("src", audio);
 			s.putMsg("viewer", "", "setAudio(" + objectToSend + ")");
 		}else if(name.equals("picture")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
