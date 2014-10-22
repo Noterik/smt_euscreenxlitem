@@ -91,6 +91,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 	public void init(Screen s){
 		System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
+		System.out.println("ITEMID="+id);
+		
+		
 		String uri = "/domain/euscreenxl/user/*/*";
 		
 		FSList fslist = FSListManager.get(uri);
@@ -99,7 +102,17 @@ public class EuscreenxlitemApplication extends Html5Application{
 			FsNode n = (FsNode)nodes.get(0);
 			
 			n.getPath();
+			
 			s.setProperty("mediaNode", n);
+			
+			// daniel check for old euscreen id
+			String pub = n.getProperty("public");
+			if (pub==null || !pub.equals("true")) {
+				System.out.println("JUMP TO OLD SITE="+id);
+				s.putMsg("social", "", "setOldSite(" + id + ")");
+				return;
+			}
+			
 			
 			JSONObject socialSettings = new JSONObject();
 			socialSettings.put("text", n.getProperty(FieldMappings.getSystemFieldName("originalTitle")));
@@ -240,6 +253,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		System.out.println("EuscreenxlitemApplication.setMetadata()");
 		
 		FsNode node = (FsNode) s.getProperty("mediaNode");
+		if (node==null) return; // added by daniel.
 		
 		String path = node.getPath();
 		String[] splits = path.split("/");

@@ -1,8 +1,5 @@
 setUrlTrigger(/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
-<<<<<<< HEAD
-setUrlTrigger(/lou/euscreen/itempage.html,/lou/domain/webtv/html5application/euscreenxlitem?id=EUS_699F19B7F20C4D7F8FA2CD3B598B68CE)
-=======
->>>>>>> FETCH_HEAD
+setUrlTrigger(/lou/euscreen/play.jsp,/lou/domain/webtv/html5application/euscreenxlitem)
 setUrlTrigger(euscreen.eu@/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
 setUrlTrigger(www.euscreen.eu@/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
 setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/item.html,/lou/domain/webtv/html5application/euscreenxlitem)
