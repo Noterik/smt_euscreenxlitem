@@ -62,7 +62,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	 */
 	public EuscreenxlitemApplication(String id) {
 		super(id); 
-		System.out.println("EuscreenxlitemApplication()");
+		//System.out.println("EuscreenxlitemApplication()");
 		
 		this.countriesForProviders = new HashMap<String, String>();
 		
@@ -89,9 +89,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
-		System.out.println("EuscreenxlitemApplication.init()");
+		//System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
-		System.out.println("ITEMID="+id);
+		//System.out.println("ITEMID="+id);
 		
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -166,7 +166,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void startViewer(Screen s){
-		System.out.println("EuscreenxlitemApplication.startViewer()");
+		//System.out.println("EuscreenxlitemApplication.startViewer()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 				
 		String name = node.getName();
@@ -250,7 +250,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void setMetadata(Screen s){
-		System.out.println("EuscreenxlitemApplication.setMetadata()");
+		//System.out.println("EuscreenxlitemApplication.setMetadata()");
 		
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 		if (node==null) return; // added by daniel.
@@ -312,7 +312,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	private void setRelated(Screen s){
-		System.out.println("setReslated()");
+		//System.out.println("setReslated()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 		String topic = node.getProperty(FieldMappings.getSystemFieldName("topic"));
 		
@@ -392,7 +392,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void sendContentProviderMail(Screen s, String data) {
-		System.out.println("Send mail to CP: " + data);
+		//System.out.println("Send mail to CP: " + data);
 		
 		JSONObject form = (JSONObject) JSONValue.parse(data);
 
