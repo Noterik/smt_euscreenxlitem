@@ -39,3 +39,4 @@ callServer(setDeviceMobile,screen)
 
 callServer(startViewer,screen)
 callServer(setMetadata,screen)
+loadContent(screen,analytics);

@@ -6,6 +6,7 @@ loadStylesheet(screen,genericadditions)
 loadStylesheet(screen,terms)
 loadStylesheet(screen,specific)
 setRole(screen,"itempage")
+loadContent(screen,analytics);
 loadContent(screen,template)
 loadContent(screen,header)
 loadContent(screen,footer)
@@ -31,3 +32,4 @@ callServer(setDeviceMobile,screen)
 
 callServer(startViewer,screen)
 callServer(setMetadata,screen)
+loadContent(screen,analytics);

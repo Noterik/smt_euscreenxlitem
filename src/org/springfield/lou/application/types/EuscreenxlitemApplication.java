@@ -78,6 +78,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
 		this.addReferid("ads", "/euscreenxlelements/ads");
+		this.addReferid("analytics", "/euscreenxlelements/analytics");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -107,7 +108,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			
 			// daniel check for old euscreen id
 			String pub = n.getProperty("public");
-			if (pub==null || !pub.equals("true")) {
+			if ((pub==null || !pub.equals("true")) && !this.inDevelMode()) {
 				System.out.println("JUMP TO OLD SITE="+id);
 				s.putMsg("social", "", "setOldSite(" + id + ")");
 				return;
