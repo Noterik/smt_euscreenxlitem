@@ -448,7 +448,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		
 		//!!! Hack to send the email to the one filled in the form (for testing purposes). When on production it should be removed
-		toemail = email;
+		//toemail = email;
 		
 		boolean success = true;
 		if(toemail!=null) {
@@ -462,6 +462,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 				InternetAddress to[] = new InternetAddress[1];
 				to[0] = new InternetAddress(toemail);
 				msg.setRecipients(Message.RecipientType.TO, to);
+				
+				InternetAddress bcc[] = new InternetAddress[1];
+				bcc[0] = new InternetAddress("r.rozendal@noterik.nl");
+				msg.setRecipients(Message.RecipientType.BCC, bcc);
+				
 				msg.setSubject(mailsubject);
 				msg.setContent(body, "text/html");
 				Transport.send(msg);
