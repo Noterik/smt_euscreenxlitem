@@ -32,7 +32,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
+import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -126,7 +126,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			s.putMsg("template", "", "hideBookmarking()");
 		}
 		
-		System.out.println("Euscreenxlitem.init()");
+		System.out.println("Euscreenxlitem.init2222()");
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
 			s.putMsg("template", "", "activateTooltips()");
@@ -141,6 +141,36 @@ public class EuscreenxlitemApplication extends Html5Application{
 	public String getFavicon() {
         return "/eddie/apps/euscreenxlelements/img/favicon.png";
     }
+	
+	public String getMetaHeaders(HttpServletRequest request) {
+		System.out.println("Euscreenxlitem.getMetaHeaders()");
+		String id =request.getParameter("id");
+		//System.out.println("ITEMID="+id);
+		
+		String uri = "/domain/euscreenxl/user/*/*";
+		
+		FSList fslist = FSListManager.get(uri);
+		List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
+		if (nodes!=null && nodes.size()>0) {
+			FsNode n = (FsNode)nodes.get(0);
+			
+			n.getPath();
+						
+			// daniel check for old euscreen id
+			String pub = n.getProperty("public");
+			if (!((pub==null || !pub.equals("true")) && !this.inDevelMode())) {
+				String metaString = "<meta property=\"og:title\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
+				metaString += "<meta property=\"og:site_name\" content=\"EUscreenXL\" />";
+				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
+				metaString += "<meta property=\"og:description\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
+				metaString += "<meta property=\"og:image\" content=\"" + this.setEdnaMapping(n.getProperty(FieldMappings.getSystemFieldName("screenshot"))) + "\" />";
+				return metaString;
+			}
+			
+		}
+		
+		return ""; // default is empty;
+	}
 	
 	private boolean inDevelMode() {
     	return LazyHomer.inDeveloperMode();
