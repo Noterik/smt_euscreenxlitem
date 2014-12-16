@@ -465,7 +465,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String body = "Identifier: " + id + "<br/>";
 		body += "Title: " + title + "<br/>";
 		body += "Link to item on EUScreen:<br/>";
-		body += "<a href=\"http://beta.euscreenxl.eu/item.html?id=" +id+ "\">http://beta.euscreenxl.eu/item.html?id="+id+"</a><br/>";
+		body += "<a href=\"http://euscreen.eu/item.html?id=" +id+ "\">http://euscreen.eu/item.html?id="+id+"</a><br/>";
 		body += "-------------------------------------------<br/><br/>";
 		body += "Subject: " + subject + "<br/>";
 		body += "Message:<br/>";
