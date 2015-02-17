@@ -19,6 +19,7 @@ loadContent(screen,linkinterceptor)
 loadContent(screen,warning)
 loadContent(screen,videocopyright)
 loadContent(screen,ads)
+loadContent(screen,social)
 callServer(init,screen)
 
 .when device=iphone

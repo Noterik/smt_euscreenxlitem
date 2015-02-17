@@ -47,6 +47,7 @@ public class FieldMappings {
         mappings.put("digitalItemURL", "digitalItemURL");
         mappings.put("episodeNumber", "episodeNumber");
         mappings.put("seasonNumber", "seasonNumber");
+        mappings.put("keywords", "localKeyword");
     }
     
     public static HashMap<String, String> getMappings(){
