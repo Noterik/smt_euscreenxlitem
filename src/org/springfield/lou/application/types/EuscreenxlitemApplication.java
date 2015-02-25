@@ -20,10 +20,12 @@
 */
 package org.springfield.lou.application.types;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -33,6 +35,7 @@ import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -324,6 +327,123 @@ public class EuscreenxlitemApplication extends Html5Application{
 		message.put("provider", this.countriesForProviders.get(provider));
 		s.putMsg("metadata", "", "setData(" + message + ")");
 	
+	}
+	
+	public void onNewUser(Screen s,String name) {
+		System.out.println("onNewUser: " + name);
+		s.setProperty("username", name);
+		super.onNewUser(s, name);
+	}
+	
+	public void loginSuccess(Screen s){
+		s.putMsg("login", "", "loginSuccess()");
+	}
+	
+	public void createCollection(Screen s, String message){
+		System.out.println("EuscreenxlitemApplication.createCollection(" + s.getId() + "," + message + ")");
+		JSONObject json = (JSONObject) JSONValue.parse(message);
+				
+		String username = (String) s.getProperty("username");
+		String newName = (String) json.get("collectionName");
+			
+		String uri = "/domain/euscreenxl/user/" + username + "/collection";
+		FSList fslist = FSListManager.get(uri, false);
+		List<FsNode> nodes = fslist.getNodes();
+				
+		for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
+			FsNode n = i.next();
+			if(n.getProperty("name").equals(newName)){
+				
+				s.putMsg("bookmarker", "", "showNewCollectionWarning()");
+				return;
+			}
+		}
+		
+		
+		UUID uuid = UUID.randomUUID();
+		Date today = new Date();
+		
+		uri = "/domain/euscreenxl/user/" + username;
+		FsNode collection = new FsNode("collection", uuid.toString());
+		collection.setName("collection");
+		collection.setProperty("author", username);
+		collection.setProperty("creationDate", today.toString());
+		collection.setProperty("name", newName);		
+		
+		Fs.insertNode(collection, uri);
+		
+		s.putMsg("bookmarker", "", "success()");
+		s.setProperty("createdCollection", uuid.toString());
+		this.loadCollections(s);
+	}
+	
+	public void loadCollections(Screen s){
+		System.out.println("Euscreenxlitem.loadCollections()");
+		String username = (String) s.getProperty("username");
+		String uri = "/domain/euscreenxl/user/" + username + "/collection";
+		FsNode mediaNode = (FsNode) s.getProperty("mediaNode");
+		
+		String createdCollection = (String) s.getProperty("createdCollection");
+		
+		System.out.println("loadCollections()");
+		System.out.println("URI: " + uri);
+		
+		FSList fslist = FSListManager.get(uri, false);
+		List<FsNode> nodes = fslist.getNodes();
+		
+		JSONArray collections = new JSONArray();
+		
+		for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
+			FsNode node = i.next();
+			
+			String childrenUri = node.getPath();
+			FSList children = FSListManager.get(childrenUri, false);
+			List<FsNode> childrenList = children.getNodes();
+			
+			JSONObject collection = new JSONObject();
+			collection.put("id", node.getId());
+			collection.put("path", node.getPath());
+			collection.put("name", node.getProperty("name"));
+			
+			for(Iterator<FsNode> ci = childrenList.iterator(); ci.hasNext();){
+				FsNode child = ci.next();
+				System.out.println("ID: " + child.getId());
+				if(child.getId().equals(mediaNode.getId())){
+					collection.put("disabled", true);
+					break;
+				}
+			}
+			
+			if(node.getId().equals(createdCollection)){
+				collection.put("selected", true);
+			}
+			
+			collections.add(collection);
+		}
+		
+		s.putMsg("bookmarker", "", "setCollections(" + collections + ")");
+	}
+	
+	public void addToCollection(Screen s, String message){
+		System.out.println("EuscreenxlitemApplication.addToCollection(" + s.getId() + "," + message + ")");
+		FsNode itemNode = (FsNode) s.getProperty("mediaNode");
+		JSONObject data = (JSONObject) JSONValue.parse(message);
+		
+		String collectionPath = (String) data.get("collectionPath");
+		FsNode collection = Fs.getNode(collectionPath);
+		
+		FsNode newNode = new FsNode(itemNode.getName(), itemNode.getId());
+		newNode.setReferid(itemNode.getPath());
+		
+		System.out.println("NEW NODE XML");
+		System.out.println(newNode.asXML());
+		
+		Fs.insertNode(newNode, collectionPath);
+		JSONObject successMessage = new JSONObject();
+		successMessage.put("collection", collection.getProperty("name"));
+		
+		s.putMsg("bookmarker", "", "nodeAddedToCollection(" + successMessage + ")");
+		this.loadCollections(s);
 	}
 	
 	private void setTerms(Screen s){

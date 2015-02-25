@@ -5,6 +5,7 @@ loadStylesheet(screen,all)
 loadStylesheet(screen,genericadditions)
 loadStylesheet(screen,terms)
 loadStylesheet(screen,specific)
+loadStylesheet(screen,customizations)
 setRole(screen,"itempage")
 loadContent(screen,analytics);
 loadContent(screen,template)

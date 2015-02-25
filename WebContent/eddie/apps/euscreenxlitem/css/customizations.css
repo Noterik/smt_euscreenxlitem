@@ -1,0 +1,17 @@
+.message{
+	font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
+.warning{
+	color: #CC0000;
+}
+
+.cancel{
+	background-color: #CC0000 !important;
+}
+
+.button-loading{
+	background-image: url(/eddie/apps/euscreenxlelements/img/spinner-button.gif) !important;
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+	text-indent: -9999px !important;
+}

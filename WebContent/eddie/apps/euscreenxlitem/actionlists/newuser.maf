@@ -1,0 +1,4 @@
+log(new user signal)
+callServer(loginSuccess,screen);
+loadContent(screen,bookmarker)
+callServer(loadCollections,screen);
