@@ -20,12 +20,23 @@
 */
 package org.springfield.lou.application.types;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -58,6 +69,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	private boolean wantedna = true;
 	private FSList providers;
 	private HashMap<String, String> countriesForProviders;
+	public String ipAddress="";
 	
 	/*
 	 * Constructor for the preview application for EUScreen providers
@@ -93,12 +105,14 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
-		//System.out.println("EuscreenxlitemApplication.init()");
+		
+		
+		
+		//System.out.println("EuscreenxlitemApplication.INIT()");
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
 		
-		
-		String uri = "/domain/euscreenxl/user/*/*";
+		String uri = "/domain/euscreenxl/user/eu_luce/video";
 		
 		FSList fslist = FSListManager.get(uri);
 		List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
@@ -129,7 +143,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			s.putMsg("template", "", "hideBookmarking()");
 		}
 		
-		System.out.println("Euscreenxlitem.init2222()");
+		//System.out.println("Euscreenxlitem.init2222()");
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
 			s.putMsg("template", "", "activateTooltips()");
@@ -145,12 +159,31 @@ public class EuscreenxlitemApplication extends Html5Application{
         return "/eddie/apps/euscreenxlelements/img/favicon.png";
     }
 	
+	
+	
 	public String getMetaHeaders(HttpServletRequest request) {
-		System.out.println("Euscreenxlitem.getMetaHeaders()");
+		//System.out.println("Euscreenxlitem.getMetaHeaders()");
+		
 		String id =request.getParameter("id");
 		//System.out.println("ITEMID="+id);
 		
-		String uri = "/domain/euscreenxl/user/*/*";
+		ipAddress=getClientIpAddress(request);
+		//System.out.println("IP Address: "+ipAddress);
+		
+		String uri = "/domain/euscreenxl/user/eu_luce/video";
+		
+		
+		String browserType = request.getHeader("User-Agent");
+		if(browserType.indexOf("Mobile") != -1) {
+			//System.out.println("IAMMOBILE!!!!!!!!");
+		  } else {
+			  //System.out.println("IAMDESK!!!!!!!!");
+		  }
+		
+		String informa = getBrowserInfo(browserType);
+		//System.out.println("INFORMAAA:"+informa);
+		
+		//System.out.println("Browser:"+browserType);
 		
 		FSList fslist = FSListManager.get(uri);
 		List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
@@ -175,12 +208,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 		return ""; // default is empty;
 	}
 	
+	
 	private boolean inDevelMode() {
     	return LazyHomer.inDeveloperMode();
     }
 	
 	public void loadMoreRelated(Screen s){
-		System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
+		//System.out.println("NOW STARTS-->EuscreenxlitemApplication.loadMoreRelated()");
 	}
 	
 	public void setDeviceMobile(Screen s){
@@ -200,11 +234,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void startViewer(Screen s){
+		
 		//System.out.println("EuscreenxlitemApplication.startViewer()");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 				
 		String name = node.getName();
-						
+					
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
 			String[] videos = rawNode.getProperty("mount").split(",");
@@ -214,13 +249,29 @@ public class EuscreenxlitemApplication extends Html5Application{
 			objectToSend.put("screenshot",this.setEdnaMapping(node.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 			objectToSend.put("aspectRatio", node.getProperty(FieldMappings.getSystemFieldName("aspectRatio")));
 			objectToSend.put("sources", sourcesArray);
-				
+
 			for(int i = 0; i < videos.length; i++){
 				JSONObject src = new JSONObject();
 				String video = videos[i];
 				
 				if (video.indexOf("http://")==-1) {
-					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw."+ extension;
+
+					Random randomGenerator = new Random();
+					Integer random= randomGenerator.nextInt(100000000);
+					String ticket = Integer.toString(random);
+
+					String videoFile=node.getPath()+ "/rawvideo/1/raw."+ extension;
+					
+					try{
+						//System.out.println("CallingSendTicket");
+						
+						sendTicket(videoFile,ipAddress,ticket);}
+					catch (Exception e){}
+					video="http://52.17.5.130/rafael"+videoFile+"?ticket="+ticket;
+					
+					//System.out.println("IP ISSSSSSSSSSS:"+ipAddress);		
+					//System.out.println("Ticket ISSSSSSSSSSS:"+ticket);
+					//System.out.println("VIDEO ISSSSSSSSSSS:"+video);
 				}
 				
 				String mime = "video/mp4";
@@ -229,6 +280,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 
 				sourcesArray.add(src);
 			}
+			
+			//System.out.println("HERE I START The video!!");
+			//System.out.println(sourcesArray);
+			
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
@@ -340,7 +395,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void createCollection(Screen s, String message){
-		System.out.println("EuscreenxlitemApplication.createCollection(" + s.getId() + "," + message + ")");
+		//System.out.println("EuscreenxlitemApplication.createCollection(" + s.getId() + "," + message + ")");
+		
 		JSONObject json = (JSONObject) JSONValue.parse(message);
 				
 		String username = (String) s.getProperty("username");
@@ -378,7 +434,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void loadCollections(Screen s){
-		System.out.println("Euscreenxlitem.loadCollections()");
+		//System.out.println("Euscreenxlitem.loadCollections()");
 		String username = (String) s.getProperty("username");
 		String uri = "/domain/euscreenxl/user/" + username + "/collection";
 		FsNode mediaNode = (FsNode) s.getProperty("mediaNode");
@@ -425,7 +481,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void addToCollection(Screen s, String message){
-		System.out.println("EuscreenxlitemApplication.addToCollection(" + s.getId() + "," + message + ")");
+		//System.out.println("EuscreenxlitemApplication.addToCollection(" + s.getId() + "," + message + ")");
+		
 		FsNode itemNode = (FsNode) s.getProperty("mediaNode");
 		JSONObject data = (JSONObject) JSONValue.parse(message);
 		
@@ -469,7 +526,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		if(topic != null){
 		
-			String uri = "/domain/euscreenxl/user/*/*";
+			String uri = "/domain/euscreenxl/user/eu_luce/video";
 			FSList fslist = FSListManager.get(uri);
 			List<FsNode> nodes = fslist.getNodes();
 			
@@ -651,4 +708,115 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		return screenshot;
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	//Themis NISV
+	/////////////////////////////////////////////////////////////////////////////////////
+	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException{
+
+		
+		URL serverUrl = new URL("http://82.94.187.227:8001/acl/ticket");
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+		
+		Long Sytime = System.currentTimeMillis();
+		Sytime = Sytime / 1000;
+		String expiry = Long.toString(Sytime+(15*60));
+		// Indicate that we want to write to the HTTP request body
+	    
+		urlConnection.setDoOutput(true);
+	    urlConnection.setRequestMethod("POST");
+	    videoFile=videoFile.substring(1);
+	    
+	    //System.out.println("I send this video address to the ticket server:"+videoFile);
+	    //System.out.println("And this ticket:"+ticket);
+	    //System.out.println("And this EXPIRY:"+expiry);
+	    
+	    // Writing the post data to the HTTP request body
+	    BufferedWriter httpRequestBodyWriter = 
+	            new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
+	    
+	    String content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
+	    		+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
+	    		+ "<role>user</role>"
+	    		+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
+	    
+	    //System.out.println("sending content!!!!"+content);
+	    httpRequestBodyWriter.write(content);
+	    httpRequestBodyWriter.close();
+	 
+	    // Reading from the HTTP response body
+	    Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
+	    while(httpResponseScanner.hasNextLine()) {
+	        System.out.println(httpResponseScanner.nextLine());
+	    }
+	    httpResponseScanner.close();
+	 
+	    }
+	private static final String[] HEADERS_TO_TRY = { 
+	    "X-Forwarded-For",
+	    "Proxy-Client-IP",
+	    "WL-Proxy-Client-IP",
+	    "HTTP_X_FORWARDED_FOR",
+	    "HTTP_X_FORWARDED",
+	    "HTTP_X_CLUSTER_CLIENT_IP",
+	    "HTTP_CLIENT_IP",
+	    "HTTP_FORWARDED_FOR",
+	    "HTTP_FORWARDED",
+	    "HTTP_VIA",
+	    "REMOTE_ADDR" };
+
+	public static String getClientIpAddress(HttpServletRequest request) {
+	    for (String header : HEADERS_TO_TRY) {
+	        String ip = request.getHeader(header);
+	        if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+	            return ip;
+	        }
+	    }
+	    return request.getRemoteAddr();
+	}
+	
+	public String  getBrowserInfo( String Information )
+	  {
+	    String browsername = "";
+	    String browserversion = "";
+	    String browser = Information;
+	    if (browser.contains("MSIE"))
+	    {
+	      String subsString = browser.substring(browser.indexOf("MSIE"));
+	      String info[] = (subsString.split(";")[0]).split(" ");
+	      browsername = info[0];
+	      browserversion = info[1];
+	    } else if (browser.contains("Firefox"))
+	    {
+
+	      String subsString = browser.substring(browser.indexOf("Firefox"));
+	      String info[] = (subsString.split(" ")[0]).split("/");
+	      browsername = info[0];
+	      browserversion = info[1];
+	    } else if (browser.contains("Chrome"))
+	    {
+
+	      String subsString = browser.substring(browser.indexOf("Chrome"));
+	      String info[] = (subsString.split(" ")[0]).split("/");
+	      browsername = info[0];
+	      browserversion = info[1];
+	    } else if (browser.contains("Opera"))
+	    {
+
+	      String subsString = browser.substring(browser.indexOf("Opera"));
+	      String info[] = (subsString.split(" ")[0]).split("/");
+	      browsername = info[0];
+	      browserversion = info[1];
+	    } else if (browser.contains("Safari"))
+	    {
+
+	      String subsString = browser.substring(browser.indexOf("Safari"));
+	      String info[] = (subsString.split(" ")[0]).split("/");
+	      browsername = info[0];
+	      browserversion = info[1];
+	    }
+	    return browsername + "-" + browserversion;
+	  }
+			
+		
 }
