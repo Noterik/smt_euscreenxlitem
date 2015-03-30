@@ -4,6 +4,7 @@
 	<property name="root.dir" value="." />
 	<property name="sources.dir" value="${root.dir}/src" />
 	<property name="dist.dir" value="${root.dir}/dist" />
+	<property name="deps.dir" value="${root.dir}/deps" />
 	<property name="build.dir" value="${root.dir}/build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="lib.dir" value="${root.dir}/libs" />
@@ -117,9 +118,17 @@
 	    </classpath>
 	  </javac>
 	</target>
+	
+	<target name="unpack-deps">
+		<unzip dest="${classes.dir}">
+		    <fileset dir="${deps.dir}">
+		        <include name="**/*.jar"/>
+		    </fileset>
+		</unzip>
+	</target>
 
 	<!-- Jar package build -->
-	<target name="build" depends="compile">
+	<target name="build" depends="compile, unpack-deps">
 		<delete file="${package.location.jar}"/>
 		<jar jarfile="${package.location.jar}" basedir="${classes.dir}">
 			<manifest>

@@ -51,6 +51,9 @@ import org.springfield.lou.application.types.conditions.OrCondition;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.screen.Screen;
 import org.springfield.mojo.ftp.URIParser;
+import org.springfield.lou.myeuscreen.publications.Collection;
+import org.springfield.lou.myeuscreen.rights.IRoleActor;
+import org.springfield.lou.myeuscreen.rights.RoleActor;
 
 
 public class EuscreenxlitemApplication extends Html5Application{
@@ -345,8 +348,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 				
 		String username = (String) s.getProperty("username");
 		String newName = (String) json.get("collectionName");
-			
-		String uri = "/domain/euscreenxl/user/" + username + "/collection";
+		
+		this.createPublicationsFolder(s);
+		
+		FsNode userNode = Fs.getNode("/domain/euscreenxl/user/" + username);
+		String uri = userNode.getPath() + "/publications/1";
 		FSList fslist = FSListManager.get(uri, false);
 		List<FsNode> nodes = fslist.getNodes();
 				
@@ -359,28 +365,29 @@ public class EuscreenxlitemApplication extends Html5Application{
 			}
 		}
 		
-		
+		IRoleActor actor = new RoleActor(userNode);
+		Collection col = Collection.createCollection(actor, username, newName);
+		/*
 		UUID uuid = UUID.randomUUID();
 		Date today = new Date();
 		
-		uri = "/domain/euscreenxl/user/" + username;
 		FsNode collection = new FsNode("collection", uuid.toString());
 		collection.setName("collection");
 		collection.setProperty("author", username);
 		collection.setProperty("creationDate", today.toString());
 		collection.setProperty("name", newName);		
 		
-		Fs.insertNode(collection, uri);
+		Fs.insertNode(collection, uri);*/
 		
 		s.putMsg("bookmarker", "", "success()");
-		s.setProperty("createdCollection", uuid.toString());
+		s.setProperty("createdCollection", col.getId());
 		this.loadCollections(s);
 	}
 	
 	public void loadCollections(Screen s){
 		System.out.println("Euscreenxlitem.loadCollections()");
 		String username = (String) s.getProperty("username");
-		String uri = "/domain/euscreenxl/user/" + username + "/collection";
+		String uri = "/domain/euscreenxl/user/" + username + "/publications/1/collection";
 		FsNode mediaNode = (FsNode) s.getProperty("mediaNode");
 		
 		String createdCollection = (String) s.getProperty("createdCollection");
@@ -444,6 +451,19 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		s.putMsg("bookmarker", "", "nodeAddedToCollection(" + successMessage + ")");
 		this.loadCollections(s);
+	}
+	
+	private void createPublicationsFolder(Screen s){
+		System.out.println("Euscreenxlitem.createPublicationsFolder()");
+		String username = (String) s.getProperty("username");
+		String userUri = "/domain/euscreenxl/user/" + username;
+		String publicationsUri = userUri + "/publications/1";
+	
+		FsNode node = Fs.getNode(publicationsUri);
+		if(node == null){
+			FsNode newNode = new FsNode("publications", "1");
+			Fs.insertNode(newNode, userUri);
+		}
 	}
 	
 	private void setTerms(Screen s){

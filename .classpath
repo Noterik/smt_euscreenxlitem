@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="libs/mojo.jar"/>
 	<classpathentry kind="lib" path="libs/javax.mail.jar"/>
 	<classpathentry kind="lib" path="libs/servlet-api.jar"/>
+	<classpathentry kind="lib" path="libs/myeuscreen.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
