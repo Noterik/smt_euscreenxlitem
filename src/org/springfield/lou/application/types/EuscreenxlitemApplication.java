@@ -20,12 +20,10 @@
 */
 package org.springfield.lou.application.types;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -49,11 +47,11 @@ import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.NotCondition;
 import org.springfield.lou.application.types.conditions.OrCondition;
 import org.springfield.lou.homer.LazyHomer;
-import org.springfield.lou.screen.Screen;
-import org.springfield.mojo.ftp.URIParser;
 import org.springfield.lou.myeuscreen.publications.Collection;
 import org.springfield.lou.myeuscreen.rights.IRoleActor;
 import org.springfield.lou.myeuscreen.rights.RoleActor;
+import org.springfield.lou.screen.Screen;
+import org.springfield.mojo.ftp.URIParser;
 
 
 public class EuscreenxlitemApplication extends Html5Application{
@@ -142,6 +140,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		setRelated(s);
 		setTerms(s);
+		JSONObject bookmarkerMessage = new JSONObject();
+		
+		bookmarkerMessage.put("itemId", id);
+		s.putMsg("bookmarker", "", "setItem(" + bookmarkerMessage + ")");
 	}
 	
 	public String getFavicon() {
@@ -165,7 +167,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 			// daniel check for old euscreen id
 			String pub = n.getProperty("public");
 			if (!((pub==null || !pub.equals("true")) && !this.inDevelMode())) {
-				String metaString = "<meta property=\"og:title\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
+				String metaString = "<link rel=\"alternate\" type=\"application/rdf+xml\" href=\"http://lod.euscreen.eu/data/" + id + ".rdf\">";
+				metaString += "<meta property=\"og:title\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
 				metaString += "<meta property=\"og:site_name\" content=\"EUscreenXL\" />";
 				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
 				metaString += "<meta property=\"og:description\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
@@ -367,17 +370,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		IRoleActor actor = new RoleActor(userNode);
 		Collection col = Collection.createCollection(actor, username, newName);
-		/*
-		UUID uuid = UUID.randomUUID();
-		Date today = new Date();
-		
-		FsNode collection = new FsNode("collection", uuid.toString());
-		collection.setName("collection");
-		collection.setProperty("author", username);
-		collection.setProperty("creationDate", today.toString());
-		collection.setProperty("name", newName);		
-		
-		Fs.insertNode(collection, uri);*/
 		
 		s.putMsg("bookmarker", "", "success()");
 		s.setProperty("createdCollection", col.getId());
