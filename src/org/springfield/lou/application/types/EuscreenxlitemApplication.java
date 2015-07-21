@@ -256,6 +256,20 @@ public class EuscreenxlitemApplication extends Html5Application{
 					catch (Exception e){}
 					
 					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw."+ extension+"?ticket="+ticket;
+				} else if (video.indexOf(".noterik.com/progressive/") > -1) {
+					Random randomGenerator = new Random();
+					Integer random= randomGenerator.nextInt(100000000);
+					String ticket = Integer.toString(random);
+					
+					String videoFile = video.substring(video.indexOf("progressive")+11);
+					
+					try{						
+						//System.out.println("CallingSendTicket");						
+						sendTicket(videoFile,ipAddress,ticket);}
+					catch (Exception e){}
+					
+					video = video+"?ticket="+ticket;
+
 				}
 				
 				String mime = "video/mp4";
