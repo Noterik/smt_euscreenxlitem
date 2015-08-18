@@ -42,7 +42,9 @@ Bookmarker.prototype.setItem = function(message){
 	  observer.observe(target, config);
 	});
 	
-	iframe.src = "http://beta.euscreenxl.eu/myeuscreen.html?page=bookmarkembed&item=" + item.id;
+	var url = eddie.getComponent('urltransformer').getURL('myeuscreen', {'page': 'bookmarkembed', 'item': item.id});
+	console.log("URL: " + url);
+	iframe.src = url;
 
 	function setIframeHeight() {
 		$iframe.height('auto');

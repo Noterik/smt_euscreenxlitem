@@ -54,6 +54,9 @@ import org.springfield.lou.application.types.conditions.AndCondition;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.NotCondition;
 import org.springfield.lou.application.types.conditions.OrCondition;
+import org.springfield.lou.euscreen.config.Config;
+import org.springfield.lou.euscreen.config.ConfigEnvironment;
+import org.springfield.lou.euscreen.config.SettingNotExistException;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.myeuscreen.publications.Collection;
 import org.springfield.lou.myeuscreen.rights.IRoleActor;
@@ -69,6 +72,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	private HashMap<String, String> countriesForProviders;
 	public String ipAddress="";
 	public static boolean isAndroid;
+	private Config config;
 	
 	/*
 	 * Constructor for the preview application for EUScreen providers
@@ -82,6 +86,15 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		// default scope is each screen is its own location, so no multiscreen effects
 		setLocationScope("screen"); 
+		try{
+			if(this.inDevelMode()){
+				config = new Config(ConfigEnvironment.DEVEL);
+			}else{
+				config = new Config();
+			}
+		}catch(SettingNotExistException snee){
+			snee.printStackTrace();
+		}
 		
 		//refer the header and footer elements from euscreenxl element application. 
 		this.addReferid("header", "/euscreenxlelements/header");
@@ -93,6 +106,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
 		this.addReferid("ads", "/euscreenxlelements/ads");
 		this.addReferid("analytics", "/euscreenxlelements/analytics");
+		this.addReferid("config", "/euscreenxlelements/config");
+		this.addReferid("urltransformer", "/euscreenxlelements/urltransformer");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -108,6 +123,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
 		
+		this.loadContent(s, "config", "config");
 		
 		String uri = "/domain/euscreenxl/user/*/*";
 		
@@ -137,7 +153,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		if(!this.inDevelMode()){
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
-			s.putMsg("template", "", "hideBookmarking()");
 		}
 		
 		//System.out.println("Euscreenxlitem.init2222()");
@@ -153,7 +168,19 @@ public class EuscreenxlitemApplication extends Html5Application{
 		JSONObject bookmarkerMessage = new JSONObject();
 		
 		bookmarkerMessage.put("itemId", id);
-		s.putMsg("bookmarker", "", "setItem(" + bookmarkerMessage + ")");
+		if(config != null){
+			this.loadContent(s, "config", "config");
+			this.loadContent(s, "urltransformer", "urltransformer");
+			try {
+				s.putMsg("config", "", "update(" + this.config.getSettingsJSON() + ")");
+			} catch (SettingNotExistException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.loadContent(s, "bookmarker", "bookmarker");
+			s.putMsg("bookmarker", "", "setItem(" + bookmarkerMessage + ")");
+
+		}
 	}
 	
 	public String getFavicon() {

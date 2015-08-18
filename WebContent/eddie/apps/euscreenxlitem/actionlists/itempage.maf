@@ -27,7 +27,6 @@ loadContent(screen,warning)
 loadContent(screen,social)
 loadContent(screen,videocopyright)
 loadContent(screen,ads)
-loadContent(screen,bookmarker)
 callServer(init,screen)
 
 .when device=iphone
