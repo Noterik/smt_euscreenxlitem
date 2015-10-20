@@ -266,7 +266,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 			objectToSend.put("aspectRatio", node.getProperty(FieldMappings.getSystemFieldName("aspectRatio")));
 			objectToSend.put("sources", sourcesArray);
 				
-			for(int i = 0; i < videos.length; i++){
+			//for(int i = 0; i < videos.length; i++){ //Temp workaround to only have 1 video instead of multiple
+			//This to prevent downloading of the second stream as the browser only plays out the first stream.
+			for (int i = 0; i < 1; i++) { 
 				JSONObject src = new JSONObject();
 				String video = videos[i];
 				
