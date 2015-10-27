@@ -26,9 +26,11 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -122,7 +124,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		//System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
-		
+
 		this.loadContent(s, "config", "config");
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -189,9 +191,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 	
 	public String getMetaHeaders(HttpServletRequest request) {
 		System.out.println("Euscreenxlitem.getMetaHeaders()");
+
 		String id =request.getParameter("id");
 		//System.out.println("ITEMID="+id);
-		
+	
 		ipAddress=getClientIpAddress(request);
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -255,7 +258,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 				
 		String name = node.getName();
-						
+		String node_id = node.getId();
+		this.loadContent(s, "myeuscreenhistory", "myeuscreenhistory");
+		s.putMsg("myeuscreenhistory", "", "addItemToHistory(" + node_id + ")");
+
+		
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
 			String[] videos = rawNode.getProperty("mount").split(",");
