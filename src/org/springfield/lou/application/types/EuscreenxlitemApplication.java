@@ -408,8 +408,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		
 		message.put("type", node.getName());
-		
-		message.put("provider", this.countriesForProviders.get(provider));
+		String fullProviderStr = this.countriesForProviders.get(provider);
+		String[] providerSplits = fullProviderStr.split("/");
+		if(providerSplits.length > 1){
+			message.put("provider", message.get("provider") + " / " + providerSplits[1]);
+		}
+		//message.put("provider")
+		//message.put("provider", this.countriesForProviders.get(provider));
 		s.putMsg("metadata", "", "setData(" + message + ")");
 	
 	}
