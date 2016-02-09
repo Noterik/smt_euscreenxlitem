@@ -165,6 +165,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 			removeContent(s, "footer");
 		}
 		
+		this.loadContent(s, "alert");
+		
 		setRelated(s);
 		setTerms(s);
 		JSONObject bookmarkerMessage = new JSONObject();

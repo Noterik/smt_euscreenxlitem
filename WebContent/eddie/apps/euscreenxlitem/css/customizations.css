@@ -15,3 +15,33 @@
 	background-repeat: no-repeat !important;
 	text-indent: -9999px !important;
 }
+
+#alert{
+	position: absolute;
+	z-index: 9999;
+	top: 0;
+}
+
+#alert .alert-container{
+	position: fixed;
+	top: 75px;
+	margin-left: -23px;
+}
+
+#alert .alert-container .alert{
+	color: white;
+	background-image: none;
+	position: relative;
+	float: left;
+	width: 100%;
+	border: none;
+}
+
+#alert .alert-container .alert .close{
+	color: white !important;
+	opacity: 1 !important;
+}
+
+#alert .alert-container .alert.alert-success{
+	background-color: green;
+}

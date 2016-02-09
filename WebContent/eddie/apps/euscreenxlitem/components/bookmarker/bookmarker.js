@@ -1,6 +1,7 @@
 var Bookmarker = function(){
 	this.element = jQuery("#bookmarker");
 	this.template = _.template(this.element.find("#bookmarker_template").text());
+	this.iframeListener = null;
 };
 Bookmarker.prototype = Object.create(Component.prototype);
 Bookmarker.prototype.setItem = function(message){
@@ -24,7 +25,6 @@ Bookmarker.prototype.setItem = function(message){
 	var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
 	iframe.addEventListener('load', function() {
-	  console.log("IFRAME LOADED!");
 	  setIframeHeight();
 
 	  var target = iframe.contentDocument.body;
@@ -40,6 +40,50 @@ Bookmarker.prototype.setItem = function(message){
 	    subtree: true
 	  };
 	  observer.observe(target, config);
+	  
+	  if(this.iframeListener){
+		  jQuery(window).off('message', this.iframeListener);
+	  }
+	  
+	  this.iframeListener = function(event){
+		  var iFrameMessage = event.originalEvent.data;
+		  
+		  if(iFrameMessage['from'] && iFrameMessage['from'] === "embedbookmarker"){
+			  var message = iFrameMessage.message;
+			  
+			  if(message['status'] === "ADDED_TO_COLLECTION"){
+				  if(eddie.getComponent('template') != null && eddie.getComponent('template').hideOverlay){
+					  eddie.getComponent('template').hideOverlay();
+			  	  }
+				  
+				  if(iFrameMessage['type'] && iFrameMessage['type'] === 'notification'){
+					  if(eddie.getComponent('alert') != null){
+						  eddie.getComponent('alert').setAlert({
+							  type: 'success',
+							  message: message.message
+						  });
+					  }
+				  }
+			  }
+			  
+			  
+			  
+		  }
+		  /*
+		  if(message['data'] && message['data']['message'] && message['data']['message']['status']){
+			  var status = message['message']['status'];
+			  console.log("STATUS: " + status);
+			  switch(status.status){
+			  	case "ADDED_TO_COLLECTION":
+			  		if(eddie.getComponent('template') != null && eddie.getComponent('template').hideOverlay){
+			  			eddie.getComponent('template').hideOverlay();
+			  		}
+			  		break;
+			  }
+		  }
+		  */
+	  }
+	  jQuery(window).on('message', this.iframeListener);
 	});
 	
 	var url = eddie.getComponent('urltransformer').getURL('myeuscreen', {'page': 'bookmarkembed', 'item': item.id});
@@ -52,4 +96,4 @@ Bookmarker.prototype.setItem = function(message){
 		$iframe.height(newHeight);
 	}
 	
-}
+};
