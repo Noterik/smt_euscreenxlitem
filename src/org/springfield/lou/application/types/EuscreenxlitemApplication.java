@@ -135,6 +135,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
 
+		this.removeContent(s, "synctime");
 		this.loadContent(s, "config", "config");
 		
 		String uri = "/domain/euscreenxl/user/*/*";
