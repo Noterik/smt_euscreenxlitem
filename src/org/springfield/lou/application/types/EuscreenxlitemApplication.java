@@ -52,6 +52,8 @@ import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.application.Html5Application;
+import org.springfield.lou.application.euscreenxlitem.mail.EuscreenCopyrightEmail;
+import org.springfield.lou.application.euscreenxlitem.mail.Mailer;
 import org.springfield.lou.application.types.conditions.AndCondition;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.NotCondition;
@@ -75,6 +77,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	public String ipAddress="";
 	public static boolean isAndroid;
 	private Config config;
+	private Mailer mailer;
 	
 	/*
 	 * Constructor for the preview application for EUScreen providers
@@ -96,6 +99,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 			}
 		}catch(SettingNotExistException snee){
 			snee.printStackTrace();
+		}
+		
+		try {
+			this.mailer = new Mailer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		//refer the header and footer elements from euscreenxl element application. 
@@ -644,9 +654,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		//System.out.println("Send mail to CP: " + data);
 		
 		JSONObject form = (JSONObject) JSONValue.parse(data);
-
-		String mailfrom = "euscreen-portal@noterik.nl";
-		String mailsubject = "Somebody showed interest in your item on EUScreen";
+		
 		String email = (String) form.get("email");
 		String id = (String) form.get("identifier");
 		String provider = (String) form.get("provider");
@@ -678,8 +686,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String toemail = null;
 		//Find the provider email
 		FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
-		toemail = providerNode.getProperty("email");
-		
+		if(providerNode != null){
+			toemail = providerNode.getProperty("email"); 
+		}else {
+			toemail = "euscreen-portal@noterik.nl";
+		}
 		String body = "Identifier: " + id + "<br/>";
 		body += "Title: " + title + "<br/>";
 		body += "Link to item on EUScreen:<br/>";
@@ -701,23 +712,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		boolean success = true;
 		if(toemail!=null) {
 			try {
-				Context initCtx = new InitialContext();
-				Context envCtx = (Context) initCtx.lookup("java:comp/env");
-				Session session = (Session) envCtx.lookup("mail/Session");
-	
-				Message msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(mailfrom));
-				InternetAddress to[] = new InternetAddress[1];
-				to[0] = new InternetAddress(toemail);
-				msg.setRecipients(Message.RecipientType.TO, to);
-				
-				InternetAddress bcc[] = new InternetAddress[1];
-				bcc[0] = new InternetAddress("r.rozendal@noterik.nl");
-				msg.setRecipients(Message.RecipientType.BCC, bcc);
-				
-				msg.setSubject(mailsubject);
-				msg.setContent(body, "text/html");
-				Transport.send(msg);
+				mailer.sendMessage(new EuscreenCopyrightEmail(toemail, body));
 			} catch(Exception e) {
 				System.out.println("Failed sending email: " + e);
 				success = false;

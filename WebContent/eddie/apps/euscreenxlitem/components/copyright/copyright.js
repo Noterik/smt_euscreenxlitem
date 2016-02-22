@@ -36,7 +36,7 @@ Copyright.prototype.setText = function(message){
     		data[field.name] = field.value;
 		});
 		
-		jQuery(this).button('loading');
+		
 		eddie.putLou("", "sendmail(" + JSON.stringify(data) + ")");
 		return false;
 	});
