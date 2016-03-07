@@ -20,13 +20,18 @@
 */
 package org.springfield.lou.application.types;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +47,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -76,6 +85,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	private HashMap<String, String> countriesForProviders;
 	public String ipAddress="";
 	public static boolean isAndroid;
+	public static String browserType;
 	private Config config;
 	private Mailer mailer;
 	
@@ -134,7 +144,31 @@ public class EuscreenxlitemApplication extends Html5Application{
 		//System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
-
+		
+		String exists = s.getParameter("_escaped_fragment_");
+		if (exists!=null) {
+			//System.out.println("GOOGLE EXISTS1");
+			s.putMsg("social", "", "jumpGoogle(" + id + ")");
+		
+		}
+		
+		/*
+		String count = null;
+		
+		//Counter loads the view count on the page by querying the API
+		try {
+			count = getCounter(id);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String ht = "<h1>Number of Views: "+count+"</h1>";
+		s.addContent("media-action", ht );
+		//System.out.println(ht);
+		*/
+		
+		
 		this.removeContent(s, "synctime");
 		this.loadContent(s, "config", "config");
 		
@@ -207,12 +241,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 
 		String id =request.getParameter("id");
 		//System.out.println("ITEMID="+id);
-	
+		
 		ipAddress=getClientIpAddress(request);
 		
 		String uri = "/domain/euscreenxl/user/*/*";
 		
-		String browserType = request.getHeader("User-Agent");
+		browserType = request.getHeader("User-Agent");
 		if(browserType.indexOf("Mobile") != -1) {
 			String ua = request.getHeader("User-Agent").toLowerCase();
 			isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");	
@@ -234,6 +268,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
 				metaString += "<meta property=\"og:description\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
 				metaString += "<meta property=\"og:image\" content=\"" + this.setEdnaMapping(n.getProperty(FieldMappings.getSystemFieldName("screenshot"))) + "\" />";
+				metaString += "<meta name=\"fragment\" content=\"!\">";
+				
 				return metaString;
 			}
 			
@@ -314,6 +350,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 					
 					try{						
 						//System.out.println("CallingSendTicket");						
+						
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
 					
@@ -390,6 +427,18 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String path = node.getPath();
 		String[] splits = path.split("/");
 		String provider = splits[4];
+		String id = s.getParameter("id");
+		
+		/*
+		try {
+			sendCounter(id,provider, ipAddress);
+			System.out.println("COUNTER sent!-------");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("COUNTER not sent!");
+			e1.printStackTrace();
+		}
+		*/
 		
 		if(!this.countriesForProviders.containsKey(provider)){
 			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
@@ -819,4 +868,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		return request.getRemoteAddr();
 	}
+	
+	
 }
