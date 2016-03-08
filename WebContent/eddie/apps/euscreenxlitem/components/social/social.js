@@ -36,8 +36,3 @@ Social.prototype.setSharingSettings = function(message){
 Social.prototype.setOldSite = function(message){
 	window.location.href = 'http://oldportal.euscreen.eu/play.jsp?id='+message;
 }
-
-Social.prototype.jumpGoogle = function(message){
-	//window.location.replace("http://mint-projects.image.ntua.gr/euscreenxl/ItemHtml?id="+message);
-	window.location.href ="http://mint-projects.image.ntua.gr/euscreenxl/ItemHtml?id="+message;
-}

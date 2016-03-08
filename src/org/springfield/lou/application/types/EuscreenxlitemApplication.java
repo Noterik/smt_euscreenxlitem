@@ -74,6 +74,7 @@ import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.myeuscreen.publications.Collection;
 import org.springfield.lou.myeuscreen.rights.IRoleActor;
 import org.springfield.lou.myeuscreen.rights.RoleActor;
+import org.springfield.lou.screen.Capabilities;
 import org.springfield.lou.screen.Screen;
 import org.springfield.mojo.ftp.URIParser;
 
@@ -141,6 +142,59 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
+		
+		this.loadContent(s, "redirector");
+		String id = s.getParameter("id");
+		String exists = s.getParameter("_escaped_fragment_");
+		if (exists!=null) {
+			//System.out.println("GOOGLE EXISTS1");
+			s.putMsg("redirector", "", "jumpGoogle(" + id + ")");
+		}
+		else{
+			loadStyleSheet(s,"bootstrap");
+			loadStyleSheet(s,"fontawesome");
+			loadStyleSheet(s,"theme");
+			loadStyleSheet(s,"all");
+			loadStyleSheet(s,"genericadditions");
+			loadStyleSheet(s,"terms");
+			loadStyleSheet(s,"specific");
+			loadStyleSheet(s,"customizations");
+			s.setRole("itempage");
+			loadContent(s,"template");
+			loadContent(s, "header");
+			loadContent(s, "footer");
+			loadContent(s,"viewer");
+			loadContent(s,"related");
+			loadContent(s,"metadata");
+			loadContent(s,"copyright");
+			loadContent(s,"mobilenav");
+			loadContent(s,"linkinterceptor");
+			loadContent(s,"warning");
+			loadContent(s,"social");
+			loadContent(s,"videocopyright");
+			loadContent(s,"ads");
+			
+			startScreen(s);
+			
+			if(s.getCapabilities().MODE_IPHONE_LANDSCAPE > 0 
+					|| s.getCapabilities().MODE_IPHONE_PORTRAIT > 0
+					|| s.getCapabilities().MODE_APHONE_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_APHONE_PORTRAIT > 0){
+				this.setDeviceMobile(s);
+			}else if(s.getCapabilities().MODE_IPAD_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_IPAD_PORTRAIT > 0
+					|| s.getCapabilities().MODE_ATABLET_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_ATABLET_PORTRAIT > 0){
+				this.setDeviceMobile(s);
+			}
+			
+			startViewer(s);
+			setMetadata(s);
+			loadContent(s, "analytics");
+		}
+	}
+	
+	public void startScreen(Screen s){
 		//System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
@@ -151,7 +205,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 			s.putMsg("social", "", "jumpGoogle(" + id + ")");
 		
 		}
-		
 		/*
 		String count = null;
 		

@@ -5,39 +5,4 @@ setUrlTrigger(www.euscreen.eu@/lou/euscreen/item.html,/lou/domain/euscreenxl/htm
 setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/item.html,/lou/domain/euscreenxl/html5application/euscreenxlitem)
 setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/item.html,/lou/domain/euscreenxl/html5application/euscreenxlitem)
 setUrlTrigger(beta.euscreen.eu@/lou/euscreen/item.html,/lou/domain/euscreenxl/html5application/euscreenxlitem)
-loadStylesheet(screen,bootstrap)
-loadStylesheet(screen,fontawesome)
-loadStylesheet(screen,theme)
-loadStylesheet(screen,all)
-loadStylesheet(screen,genericadditions)
-loadStylesheet(screen,terms)
-loadStylesheet(screen,specific)
-loadStylesheet(screen,customizations)
-setRole(screen,"itempage")
-loadContent(screen,template)
-loadContent(screen,header)
-loadContent(screen,footer)
-loadContent(screen,viewer)
-loadContent(screen,related)
-loadContent(screen,metadata)
-loadContent(screen,copyright)
-loadContent(screen,mobilenav)
-loadContent(screen,linkinterceptor)
-loadContent(screen,warning)
-loadContent(screen,social)
-loadContent(screen,videocopyright)
-loadContent(screen,ads)
 callServer(init,screen)
-
-.when device=iphone
-callServer(setDeviceMobile,screen)
-
-.when device=ipad
-callserver(setDeviceIpad,screen)
-
-.when device=aphone
-callServer(setDeviceMobile,screen)
-
-callServer(startViewer,screen)
-callServer(setMetadata,screen)
-loadContent(screen,analytics);
