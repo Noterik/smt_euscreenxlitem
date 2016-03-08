@@ -268,7 +268,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
 				metaString += "<meta property=\"og:description\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
 				metaString += "<meta property=\"og:image\" content=\"" + this.setEdnaMapping(n.getProperty(FieldMappings.getSystemFieldName("screenshot"))) + "\" />";
-				metaString += "<meta name=\"fragment\" content=\"!\">";
+				metaString += "<meta name=\"fragment\" content=\"!\" />";
 				
 				return metaString;
 			}
