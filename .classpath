@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="libs/servlet-api.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/myeuscreen_helper.jar"/>
 	<classpathentry kind="lib" path="deps/euscreen_helper.jar"/>
+	<classpathentry kind="lib" path="libs/screen_component.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

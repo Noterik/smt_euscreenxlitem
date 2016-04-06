@@ -20,38 +20,19 @@
 */
 package org.springfield.lou.application.types;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,11 +51,11 @@ import org.springfield.lou.application.types.conditions.OrCondition;
 import org.springfield.lou.euscreen.config.Config;
 import org.springfield.lou.euscreen.config.ConfigEnvironment;
 import org.springfield.lou.euscreen.config.SettingNotExistException;
+import org.springfield.lou.euscreen.security.Security;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.myeuscreen.publications.Collection;
 import org.springfield.lou.myeuscreen.rights.IRoleActor;
 import org.springfield.lou.myeuscreen.rights.RoleActor;
-import org.springfield.lou.screen.Capabilities;
 import org.springfield.lou.screen.Screen;
 import org.springfield.mojo.ftp.URIParser;
 
@@ -223,6 +204,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		
 		this.removeContent(s, "synctime");
+		Security security = new Security(s, config);
+		security.render();
 		this.loadContent(s, "config", "config");
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -315,7 +298,14 @@ public class EuscreenxlitemApplication extends Html5Application{
 			// daniel check for old euscreen id
 			String pub = n.getProperty("public");
 			if (!((pub==null || !pub.equals("true")) && !this.inDevelMode())) {
+				
 				String metaString = "<link rel=\"alternate\" type=\"application/rdf+xml\" href=\"http://lod.euscreen.eu/data/" + id + ".rdf\">";
+				metaString += "<title>EUscreen - " + n.getProperty(FieldMappings.getSystemFieldName("title")) + "</title>";
+				metaString += "<meta name=\"Description\" CONTENT=\"Provider: " + n.getProperty(FieldMappings.getSystemFieldName("provider"))
+						+ ", Title: " + n.getProperty(FieldMappings.getSystemFieldName("title"))
+						+ ", Title " + n.getProperty(FieldMappings.getSystemFieldName("language")) + ": " + n.getProperty(FieldMappings.getSystemFieldName("originalTitle"))
+						+ ", Topic: " + n.getProperty(FieldMappings.getSystemFieldName("topic"))
+						+ ", Type: " + n.getProperty(FieldMappings.getSystemFieldName("materialType")) + "\"/>";
 				metaString += "<meta property=\"og:title\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
 				metaString += "<meta property=\"og:site_name\" content=\"EUscreenXL\" />";
 				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
