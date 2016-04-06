@@ -180,13 +180,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
 		
-		String exists = s.getParameter("_escaped_fragment_");
-		if (exists!=null) {
-			//System.out.println("GOOGLE EXISTS1");
-			s.putMsg("social", "", "jumpGoogle(" + id + ")");
-		
-		}
-		/*
 		String count = null;
 		
 		//Counter loads the view count on the page by querying the API
@@ -197,10 +190,10 @@ public class EuscreenxlitemApplication extends Html5Application{
 			e1.printStackTrace();
 		}
 		
-		String ht = "<h1>Number of Views: "+count+"</h1>";
+		String ht = "<h1 style='display:inline-block;'><b>"+count+"  <font size='2'>VIEWS</font></b></h1>";
 		s.addContent("media-action", ht );
 		//System.out.println(ht);
-		*/
+		
 		
 		
 		this.removeContent(s, "synctime");
@@ -472,16 +465,16 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String provider = splits[4];
 		String id = s.getParameter("id");
 		
-		/*
+		
 		try {
 			sendCounter(id,provider, ipAddress);
-			System.out.println("COUNTER sent!-------");
+			//System.out.println("COUNTER sent!-------");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("COUNTER not sent!");
+			//System.out.println("COUNTER not sent!");
 			e1.printStackTrace();
 		}
-		*/
+		
 		
 		if(!this.countriesForProviders.containsKey(provider)){
 			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
@@ -912,5 +905,83 @@ public class EuscreenxlitemApplication extends Html5Application{
 		return request.getRemoteAddr();
 	}
 	
+	
+	private static String getCountry(String ipAddress) throws IOException {
+		URL serverUrl = new URL("http://api.ipinfodb.com/v3/ip-country/?key=2ce99ee15e91fc8327eacd7398f6f01f9c94e201ceed4b868211f7a9ad9d8133&ip="+ipAddress);
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+		
+		urlConnection.setDoOutput(true);
+		urlConnection.setRequestMethod("GET");
+		StringBuilder result = new StringBuilder();
+		
+		BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+	      String line;
+	      while ((line = rd.readLine()) != null) {
+	         result.append(line);
+	      }
+	    rd.close();
+
+	    String[] results=result.toString().split(";");
+	    
+	    return results[results.length-1];
+	   }
+	
+	private static void sendCounter(String videoid,String provider, String ipAddress) throws IOException {
+		URL serverUrl = new URL("http://top2000lab.nl/nb/euapi/api.php/counter/"+videoid);
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+		
+		urlConnection.setDoOutput(true);
+		urlConnection.setRequestMethod("POST");
+		urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		
+		// Writing the post data to the HTTP request body
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String instance = dateFormat.format(cal.getTime());
+		String country = getCountry(ipAddress);
+		
+		JSONObject body = new JSONObject();
+		body.put("eus_id",videoid);
+		body.put("provider", provider);
+		body.put("country", country);
+		body.put("date_time", instance);
+		body.put("browser", browserType);
+		
+		BufferedWriter httpRequestBodyWriter = 
+		new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
+		String content=body.toString();
+		
+		httpRequestBodyWriter.write(content);
+		httpRequestBodyWriter.close();
+		
+		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
+		while(httpResponseScanner.hasNextLine()) {
+			System.out.println(httpResponseScanner.nextLine());
+		}
+		httpResponseScanner.close();
+	}
+	
+	private static String getCounter(String videoid) throws IOException {
+		
+		URL serverUrl = new URL("http://top2000lab.nl/nb/euapi/api.php/total/"+videoid);
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+		
+		urlConnection.setDoOutput(true);
+		urlConnection.setRequestMethod("GET");
+		StringBuilder result = new StringBuilder();
+		BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+	      String line;
+	      while ((line = rd.readLine()) != null) {
+	         result.append(line);
+	      }
+	      
+	    rd.close();
+
+	    JSONObject obj = (JSONObject) JSONValue.parse(result.toString());
+	    
+	    return ((obj == null) ? "0" : String.valueOf(obj.get("views")));
+
+	    
+	   }
 	
 }
