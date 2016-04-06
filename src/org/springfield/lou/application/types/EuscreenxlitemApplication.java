@@ -24,24 +24,14 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
@@ -61,6 +51,7 @@ import org.springfield.lou.application.types.conditions.OrCondition;
 import org.springfield.lou.euscreen.config.Config;
 import org.springfield.lou.euscreen.config.ConfigEnvironment;
 import org.springfield.lou.euscreen.config.SettingNotExistException;
+import org.springfield.lou.euscreen.security.Security;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.myeuscreen.publications.Collection;
 import org.springfield.lou.myeuscreen.rights.IRoleActor;
@@ -76,6 +67,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	private HashMap<String, String> countriesForProviders;
 	public String ipAddress="";
 	public static boolean isAndroid;
+	public static String browserType;
 	private Config config;
 	private Mailer mailer;
 	
@@ -131,11 +123,89 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
+		
+		this.loadContent(s, "redirector");
+		String id = s.getParameter("id");
+		String exists = s.getParameter("_escaped_fragment_");
+		if (exists!=null) {
+			//System.out.println("GOOGLE EXISTS1");
+			s.putMsg("redirector", "", "jumpGoogle(" + id + ")");
+		}
+		else{
+			loadStyleSheet(s,"bootstrap");
+			loadStyleSheet(s,"fontawesome");
+			loadStyleSheet(s,"theme");
+			loadStyleSheet(s,"all");
+			loadStyleSheet(s,"genericadditions");
+			loadStyleSheet(s,"terms");
+			loadStyleSheet(s,"specific");
+			loadStyleSheet(s,"customizations");
+			s.setRole("itempage");
+			loadContent(s,"template");
+			loadContent(s, "header");
+			loadContent(s, "footer");
+			loadContent(s,"viewer");
+			loadContent(s,"related");
+			loadContent(s,"metadata");
+			loadContent(s,"copyright");
+			loadContent(s,"mobilenav");
+			loadContent(s,"linkinterceptor");
+			loadContent(s,"warning");
+			loadContent(s,"social");
+			loadContent(s,"videocopyright");
+			loadContent(s,"ads");
+			
+			startScreen(s);
+			
+			if(s.getCapabilities().MODE_IPHONE_LANDSCAPE > 0 
+					|| s.getCapabilities().MODE_IPHONE_PORTRAIT > 0
+					|| s.getCapabilities().MODE_APHONE_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_APHONE_PORTRAIT > 0){
+				this.setDeviceMobile(s);
+			}else if(s.getCapabilities().MODE_IPAD_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_IPAD_PORTRAIT > 0
+					|| s.getCapabilities().MODE_ATABLET_LANDSCAPE > 0
+					|| s.getCapabilities().MODE_ATABLET_PORTRAIT > 0){
+				this.setDeviceMobile(s);
+			}
+			
+			startViewer(s);
+			setMetadata(s);
+			loadContent(s, "analytics");
+		}
+	}
+	
+	public void startScreen(Screen s){
 		//System.out.println("EuscreenxlitemApplication.init()");
 		String id = s.getParameter("id");
 		//System.out.println("ITEMID="+id);
-
+		
+		String exists = s.getParameter("_escaped_fragment_");
+		if (exists!=null) {
+			//System.out.println("GOOGLE EXISTS1");
+			s.putMsg("social", "", "jumpGoogle(" + id + ")");
+		
+		}
+		/*
+		String count = null;
+		
+		//Counter loads the view count on the page by querying the API
+		try {
+			count = getCounter(id);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String ht = "<h1>Number of Views: "+count+"</h1>";
+		s.addContent("media-action", ht );
+		//System.out.println(ht);
+		*/
+		
+		
 		this.removeContent(s, "synctime");
+		Security security = new Security(s, config);
+		security.render();
 		this.loadContent(s, "config", "config");
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -207,12 +277,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 
 		String id =request.getParameter("id");
 		//System.out.println("ITEMID="+id);
-	
+		
 		ipAddress=getClientIpAddress(request);
 		
 		String uri = "/domain/euscreenxl/user/*/*";
 		
-		String browserType = request.getHeader("User-Agent");
+		browserType = request.getHeader("User-Agent");
 		if(browserType.indexOf("Mobile") != -1) {
 			String ua = request.getHeader("User-Agent").toLowerCase();
 			isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");	
@@ -228,12 +298,21 @@ public class EuscreenxlitemApplication extends Html5Application{
 			// daniel check for old euscreen id
 			String pub = n.getProperty("public");
 			if (!((pub==null || !pub.equals("true")) && !this.inDevelMode())) {
+				
 				String metaString = "<link rel=\"alternate\" type=\"application/rdf+xml\" href=\"http://lod.euscreen.eu/data/" + id + ".rdf\">";
+				metaString += "<title>EUscreen - " + n.getProperty(FieldMappings.getSystemFieldName("title")) + "</title>";
+				metaString += "<meta name=\"Description\" CONTENT=\"Provider: " + n.getProperty(FieldMappings.getSystemFieldName("provider"))
+						+ ", Title: " + n.getProperty(FieldMappings.getSystemFieldName("title"))
+						+ ", Title " + n.getProperty(FieldMappings.getSystemFieldName("language")) + ": " + n.getProperty(FieldMappings.getSystemFieldName("originalTitle"))
+						+ ", Topic: " + n.getProperty(FieldMappings.getSystemFieldName("topic"))
+						+ ", Type: " + n.getProperty(FieldMappings.getSystemFieldName("materialType")) + "\"/>";
 				metaString += "<meta property=\"og:title\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
 				metaString += "<meta property=\"og:site_name\" content=\"EUscreenXL\" />";
 				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
 				metaString += "<meta property=\"og:description\" content=\"" + n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
 				metaString += "<meta property=\"og:image\" content=\"" + this.setEdnaMapping(n.getProperty(FieldMappings.getSystemFieldName("screenshot"))) + "\" />";
+				metaString += "<meta name=\"fragment\" content=\"!\" />";
+				
 				return metaString;
 			}
 			
@@ -314,6 +393,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 					
 					try{						
 						//System.out.println("CallingSendTicket");						
+						
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
 					
@@ -390,6 +470,18 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String path = node.getPath();
 		String[] splits = path.split("/");
 		String provider = splits[4];
+		String id = s.getParameter("id");
+		
+		/*
+		try {
+			sendCounter(id,provider, ipAddress);
+			System.out.println("COUNTER sent!-------");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("COUNTER not sent!");
+			e1.printStackTrace();
+		}
+		*/
 		
 		if(!this.countriesForProviders.containsKey(provider)){
 			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
@@ -819,4 +911,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 		}
 		return request.getRemoteAddr();
 	}
+	
+	
 }
