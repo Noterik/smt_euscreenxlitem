@@ -229,6 +229,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			JSONObject socialSettings = new JSONObject();
 			socialSettings.put("text", n.getProperty(FieldMappings.getSystemFieldName("originalTitle")));
 			
+
 			s.putMsg("social", "", "setSharingSettings(" + socialSettings + ")");
 		}
 		
@@ -658,6 +659,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String provider = splits[4];
 		message.put("providerReadable", this.countriesForProviders.get(provider));
 		message.put("title", node.getProperty(FieldMappings.getSystemFieldName("title")));
+		
+		
+		message.put("copyRightOrg", node.getProperty("iprRestrictions"));
+
+		
+		
+		
 		s.putMsg("copyright", "", "setText(" + message + ")");
 	}
 	
