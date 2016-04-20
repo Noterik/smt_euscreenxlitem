@@ -10,7 +10,7 @@ Copyright.prototype = Object.create(Component.prototype);
 Copyright.prototype.setText = function(message){
 	var self = this;
 	var data = JSON.parse(message);
-	if(data.copyRightOrg.indexOf("Rights Reserved") > -1){
+	if(data.copyRightOrg.indexOf("Rights Reserved") > -1 || data.copyRightOrg.indexOf("Free Access") > -1){
 		data.copyRightLink = "http://www.europeana.eu/portal/rights/rr-f.html ";
 	}else if (data.copyRightOrg.indexOf("Creative Commons") > -1){
 		data.copyRightLink = "https://wiki.creativecommons.org/wiki/CC0";
