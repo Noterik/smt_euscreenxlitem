@@ -472,14 +472,14 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String id = s.getParameter("id");
 		
 		
-		try {
+		/*try {
 			sendCounter(id,provider, ipAddress);
 			//System.out.println("COUNTER sent!-------");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			//System.out.println("COUNTER not sent!");
 			e1.printStackTrace();
-		}
+		}*/
 		
 		
 		if(!this.countriesForProviders.containsKey(provider)){
