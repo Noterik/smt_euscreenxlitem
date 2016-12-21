@@ -472,14 +472,14 @@ public class EuscreenxlitemApplication extends Html5Application{
 		String id = s.getParameter("id");
 		
 		
-		/*try {
+		try {
 			sendCounter(id,provider, ipAddress);
 			//System.out.println("COUNTER sent!-------");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			//System.out.println("COUNTER not sent!");
 			e1.printStackTrace();
-		}*/
+		}
 		
 		
 		if(!this.countriesForProviders.containsKey(provider)){
@@ -918,29 +918,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		return request.getRemoteAddr();
 	}
 	
-	
-	private static String getCountry(String ipAddress) throws IOException {
-		URL serverUrl = new URL("http://api.ipinfodb.com/v3/ip-country/?key=2ce99ee15e91fc8327eacd7398f6f01f9c94e201ceed4b868211f7a9ad9d8133&ip="+ipAddress);
-		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
-		
-		urlConnection.setDoOutput(true);
-		urlConnection.setRequestMethod("GET");
-		StringBuilder result = new StringBuilder();
-		
-		BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-	      String line;
-	      while ((line = rd.readLine()) != null) {
-	         result.append(line);
-	      }
-	    rd.close();
-
-	    String[] results=result.toString().split(";");
-	    
-	    return results[results.length-1];
-	   }
-	
 	private static void sendCounter(String videoid,String provider, String ipAddress) throws IOException {
-		URL serverUrl = new URL("http://top2000lab.nl/nb/euapi/api.php/counter/"+videoid);
+		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/counter/"+videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		urlConnection.setDoOutput(true);
@@ -951,7 +930,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String instance = dateFormat.format(cal.getTime());
-		String country = getCountry(ipAddress);
+		String country = ipAddress;
 		
 		JSONObject body = new JSONObject();
 		body.put("eus_id",videoid);
@@ -976,7 +955,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	
 	private static String getCounter(String videoid) throws IOException {
 		
-		URL serverUrl = new URL("http://top2000lab.nl/nb/euapi/api.php/total/"+videoid);
+		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/total/"+videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		urlConnection.setDoOutput(true);
