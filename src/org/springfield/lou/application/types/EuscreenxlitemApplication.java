@@ -820,7 +820,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			success = false;
 		}
 		
-		String response = "Your message has been successfuly sent.";
+		String response = "Your message has been sent successfully.";
 		if(!success) response = "There was a problem sending your mail.<br/>Please try again later.";
 		
 		mailResponse.put("status", Boolean.toString(success));
