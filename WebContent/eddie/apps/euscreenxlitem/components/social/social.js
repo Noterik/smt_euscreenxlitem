@@ -34,5 +34,5 @@ Social.prototype.setSharingSettings = function(message){
     this.$googleButton.SocialSharing({ type : 'google', url : document.location, text : data.text });
 };
 Social.prototype.setOldSite = function(message){
-	window.location.href = 'http://oldportal.euscreen.eu/play.jsp?id='+message;
+	window.location.href = 'http://euscreen.eu/';
 }
