@@ -14,7 +14,7 @@ public class FieldMappings {
         mappings.put("originalTitle", "TitleSet_TitleSetInOriginalLanguage_title");
         mappings.put("provider", "provider");
         mappings.put("year", "SpatioTemporalInformation_TemporalInformation_productionYear");
-        mappings.put("language", "originallanguage");
+        mappings.put("language", "LanguageInformation_languageUsed");
         mappings.put("duration", "TechnicalInformation_itemDuration");
         mappings.put("topic", "topic");
         mappings.put("publisher", "publisherbroadcaster");
