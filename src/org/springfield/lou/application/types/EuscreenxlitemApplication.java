@@ -30,6 +30,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -850,7 +851,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 	//Themis NISV
 	/////////////////////////////////////////////////////////////////////////////////////
 	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException {
-		URL serverUrl = new URL("http://stream.noterik.com:8080/lenny/acl/ticket");
+		System.out.println(getCurrentTimeStamp()+" starting sending ticket");
+	    
+	    	URL serverUrl = new URL("http://ticket.noterik.com:8080/lenny/acl/ticket");
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		Long Sytime = System.currentTimeMillis();
@@ -860,6 +863,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		// Indicate that we want to write to the HTTP request body
 		
 		urlConnection.setDoOutput(true);
+		urlConnection.setRequestProperty("Content-Type", "text/xml");
 		urlConnection.setRequestMethod("POST");
 		videoFile=videoFile.substring(1);
 		
@@ -885,16 +889,20 @@ public class EuscreenxlitemApplication extends Html5Application{
 			+ "<role>user</role>"
 			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
 		}
-		//System.out.println("sending content!!!!"+content);
+		System.out.println(getCurrentTimeStamp()+" sending content "+content);
 		httpRequestBodyWriter.write(content);
 		httpRequestBodyWriter.close();
+		
+		System.out.println(getCurrentTimeStamp()+" response code = "+urlConnection.getResponseCode());
 		
 		// Reading from the HTTP response body
 		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
 		while(httpResponseScanner.hasNextLine()) {
 			System.out.println(httpResponseScanner.nextLine());
 		}
-		httpResponseScanner.close();		
+		httpResponseScanner.close();
+		urlConnection.disconnect();
+		System.out.println(getCurrentTimeStamp()+" Closing url connection");
 	}
 	
 	private static final String[] HEADERS_TO_TRY = { 
@@ -920,8 +928,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 		return request.getRemoteAddr();
 	}
 	
-	private static void sendCounter(String videoid,String provider, String ipAddress) throws IOException {
-		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/counter/"+videoid);
+	private static void sendCounter(String videoid,String provider, String ipAddress) throws IOException {	    
+	    	URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/counter/"+videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		urlConnection.setDoOutput(true);
@@ -956,7 +964,6 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	private static String getCounter(String videoid) throws IOException {
-		
 		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/total/"+videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
@@ -974,8 +981,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 	    JSONObject obj = (JSONObject) JSONValue.parse(result.toString());
 	    
 	    return ((obj == null) ? "0" : String.valueOf(obj.get("views")));
-
-	    
 	   }
+	
+	public static String getCurrentTimeStamp() {
+	    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");//dd/MM/yyyy
+	    Date now = new Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
+	}
 	
 }
