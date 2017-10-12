@@ -48,8 +48,9 @@ public class Mailer {
 		javax.mail.Message msg = new MimeMessage(session);
 		try {
 			msg.setFrom(new InternetAddress(message.getSender()));
-			msg.setRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(message.getRecipient()));
-			msg.setRecipient(javax.mail.Message.RecipientType.CC, new InternetAddress(message.getCCRecipient()));
+			msg.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(message.getRecipient()));
+			msg.addRecipient(javax.mail.Message.RecipientType.CC, new InternetAddress(message.getCCRecipient()));
+			msg.addRecipient(javax.mail.Message.RecipientType.CC, new InternetAddress("info@euscreen.eu"));
 			msg.setSubject(message.getSubject());
 			
 			msg.setContent(message.getBody(), "text/html");
