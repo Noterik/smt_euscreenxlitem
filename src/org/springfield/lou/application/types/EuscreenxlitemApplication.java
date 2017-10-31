@@ -373,7 +373,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				JSONObject src = new JSONObject();
 				String video = videos[i];
 				
-				if (video.indexOf("http://")==-1) {
+				if (video.indexOf("http://") == -1 && video.indexOf("https://") == -1) {
 					Random randomGenerator = new Random();
 					Integer random= randomGenerator.nextInt(100000000);
 					String ticket = Integer.toString(random);
@@ -415,7 +415,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			String audio = rawNode.getProperty("mount");
 			String extension = rawNode.getProperty("extension");
 			String mimeType = "audio/mpeg";
-			if(!audio.startsWith("http://")) {
+			if(!audio.startsWith("http://") && !audio.startsWith("https://")) {
 				audio = "http://" + audio + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 				if(extension.equalsIgnoreCase("wav")) {
 					mimeType = "audio/wav";
@@ -431,7 +431,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
 			String rawpicture = rawNode.getProperty("mount");
 			String extension = rawNode.getProperty("extension");
-			if(!rawpicture.startsWith("http://")) {
+			if(!rawpicture.startsWith("http://") && !rawpicture.startsWith("https://")) {
 				rawpicture = "http://" + rawpicture + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 			} else {
 				if(rawpicture.contains("/edna")) {
@@ -454,7 +454,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawdoc/1");
 			String doc = rawNode.getProperty("mount");
 			String extension = rawNode.getProperty("extension");
-			if(!doc.startsWith("http://")) {
+			if(!doc.startsWith("http://") && !doc.startsWith("https://")) {
 				doc = "http://" + doc + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 			}
 			JSONObject objectToSend = new JSONObject();
