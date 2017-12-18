@@ -5,7 +5,7 @@ public class ForgotPassword extends AbstractMessage {
 		super();
 		this.setRecipient(recipient);
 		this.setSubject("MyEUscreen forgot password ");
-		this.setSender("euscreen.mailer@gmail.com");
+		this.setSender("no-reply@euscreenxl.eu");
 		StringBuilder stringbuilder = new StringBuilder();
 		stringbuilder.append("<p>Dear " + user + ",</p>");
 		stringbuilder.append("<br />");

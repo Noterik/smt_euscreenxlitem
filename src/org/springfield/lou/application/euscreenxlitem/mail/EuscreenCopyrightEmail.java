@@ -6,7 +6,7 @@ public class EuscreenCopyrightEmail extends AbstractMessage {
 		this.setRecipient(recipient);
 		this.setCCRecipient("r.rozendal@noterik.nl");
 		this.setSubject("Somebody showed interest in your item on EUScreen");
-		this.setSender("euscreen-portal@noterik.nl");		
+		this.setSender("no-reply@euscreenxl.eu");		
 		this.setBody(summery);
 	}
 
