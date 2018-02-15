@@ -356,6 +356,9 @@ public class EuscreenxlitemApplication extends Html5Application{
 		this.loadContent(s, "myeuscreenhistory", "myeuscreenhistory");
 		s.putMsg("myeuscreenhistory", "", "addItemToHistory(" + node_id + ")");
 
+		String p = node.getPath();
+		String[] splits = p.split("/");
+		String provider = splits[4];
 		
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
@@ -409,6 +412,16 @@ public class EuscreenxlitemApplication extends Html5Application{
 
 				sourcesArray.add(src);
 			}
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("screenshot", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
+				JSONObject src = new JSONObject();
+				src.put("src", "");
+				src.put("mime", "");
+				objectToSend.put("sources", new JSONArray().add(src));
+			}
+			
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
@@ -426,6 +439,13 @@ public class EuscreenxlitemApplication extends Html5Application{
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("mime", mimeType);
 			objectToSend.put("src", audio);
+			objectToSend.put("provider", provider);
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "");
+			}
+			
 			s.putMsg("viewer", "", "setAudio(" + objectToSend + ")");
 		}else if(name.equals("picture")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
@@ -449,6 +469,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", picture);
 			objectToSend.put("alt", node.getProperty(FieldMappings.getSystemFieldName("title")));
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
+			}
+			
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawdoc/1");
@@ -459,6 +485,12 @@ public class EuscreenxlitemApplication extends Html5Application{
 			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", doc);
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.pdf");
+			}
+			
 			s.putMsg("viewer", "", "setDoc(" + objectToSend + ")");
 		}
 	}
