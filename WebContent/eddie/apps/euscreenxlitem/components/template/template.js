@@ -80,3 +80,9 @@ Template.prototype.hideBookmarking = function(){
 Template.prototype.hideOverlay = function(){
 	this.activeOverlay.fadeOut('fast');
 }
+
+var link = document.createElement('link');
+link.setAttribute('rel', 'stylesheet');
+link.setAttribute('type', 'text/css');
+link.setAttribute('href', 'https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+document.head.appendChild(link);

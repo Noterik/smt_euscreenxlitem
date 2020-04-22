@@ -83,7 +83,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	 */
 	public EuscreenxlitemApplication(String id) {
 		super(id); 
-		//System.out.println("EuscreenxlitemApplication()");
+		System.out.println("EuscreenxlitemApplication(2)");
 		
 		this.countriesForProviders = new HashMap<String, String>();
 		
@@ -129,15 +129,16 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
-		
+		//System.out.println("INIT SCREEN!!!!!!");
 		this.loadContent(s, "redirector");
 		String id = s.getParameter("id");
 		String exists = s.getParameter("_escaped_fragment_");
 		if (exists!=null) {
-			//System.out.println("GOOGLE EXISTS1");
+			System.out.println("GOOGLE EXISTS1");
 			s.putMsg("redirector", "", "jumpGoogle(" + id + ")");
 		}
 		else{
+			//System.out.println("LOAD SCREEN !!!!");
 			loadStyleSheet(s,"bootstrap");
 			loadStyleSheet(s,"fontawesome");
 			loadStyleSheet(s,"theme");
@@ -196,11 +197,8 @@ public class EuscreenxlitemApplication extends Html5Application{
 			e1.printStackTrace();
 		}
 		
-		String ht = "<h1 style='display:inline-block;'><b>"+count+"  <font size='2'>VIEWS</font></b></h1>";
+		String ht = "<h1 style='display:inline-block;'><b>"+count+"  <font size='2'>VIEWs</font></b></h1>";
 		s.addContent("media-action", ht );
-		//System.out.println(ht);
-		
-		
 		
 		this.removeContent(s, "synctime");
 		Security security = new Security(s, config);
@@ -214,7 +212,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 		if (nodes!=null && nodes.size()>0) {
 			FsNode n = (FsNode)nodes.get(0);
 			
-			System.out.println(n.getPropertiesXML());
+			//System.out.println(n.getPropertiesXML());
 			
 			n.getPath();
 			
@@ -223,7 +221,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			// daniel check for old euscreen id
 			String pub = n.getProperty("public");
 			if ((pub==null || !pub.equals("true")) && !this.inDevelMode()) {
-				System.out.println("JUMP TO OLD SITE="+id);
+				//System.out.println("JUMP TO OLD SITE="+id);
 				s.putMsg("social", "", "setOldSite(" + id + ")");
 				return;
 			}
@@ -275,11 +273,11 @@ public class EuscreenxlitemApplication extends Html5Application{
     }
 	
 	public String getMetaHeaders(HttpServletRequest request) {
-		System.out.println("Euscreenxlitem.getMetaHeaders()");
+		System.out.println("Euscreenxlitem.getMetaHeaders(2)"+request.getQueryString());
 
 		String id =request.getParameter("id");
-		//System.out.println("ITEMID="+id);
-		
+		System.out.println("ITEMID2="+id);
+
 		ipAddress=getClientIpAddress(request);
 		
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -328,7 +326,7 @@ public class EuscreenxlitemApplication extends Html5Application{
     }
 	
 	public void loadMoreRelated(Screen s){
-		System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
+		//System.out.println("EuscreenxlitemApplication.loadMoreRelated()");
 	}
 	
 	public void setDeviceMobile(Screen s){
@@ -348,7 +346,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 	}
 	
 	public void startViewer(Screen s){
-		//System.out.println("EuscreenxlitemApplication.startViewer()");
+		//System.out.println("EuscreenxlitemApplication.startViewer(2)");
 		FsNode node = (FsNode) s.getProperty("mediaNode");
 				
 		String name = node.getName();
@@ -362,16 +360,18 @@ public class EuscreenxlitemApplication extends Html5Application{
 		
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
+			System.out.println("mainNode="+node.getPath());	
 			String[] videos = rawNode.getProperty("mount").split(",");
 			JSONObject objectToSend = new JSONObject();
 			JSONArray sourcesArray = new JSONArray();
 			String extension = rawNode.getProperty("extension");
+			//System.out.println("rawNode="+rawNode.asXML());
 			objectToSend.put("screenshot",this.setEdnaMapping(node.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
 			objectToSend.put("aspectRatio", node.getProperty(FieldMappings.getSystemFieldName("aspectRatio")));
 			objectToSend.put("sources", sourcesArray);
 				
 			//for(int i = 0; i < videos.length; i++){ //Temp workaround to only have 1 video instead of multiple
-			//This to prevent downloading of the second stream as the browser only plays out the first stream.
+			//This to prevent: downloading of the second stream as the browser only plays out the first stream.
 			for (int i = 0; i < 1; i++) { 
 				JSONObject src = new JSONObject();
 				String video = videos[i];
@@ -382,13 +382,17 @@ public class EuscreenxlitemApplication extends Html5Application{
 					String ticket = Integer.toString(random);
 
 					String videoFile= "/"+video+"/"+node.getPath()+ "/rawvideo/1/raw."+ extension;
-					
+					videoFile = videoFile.replace("//","/");			
 					try{						
 						//System.out.println("CallingSendTicket");						
 						sendTicket(videoFile,ipAddress,ticket);}
-					catch (Exception e){}
+					catch (Exception e){
+						e.printStackTrace();
+					}
 					
 					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw."+ extension+"?ticket="+ticket;
+
+					System.out.println("VALID TICKET SEND="+video);
 				} else if (video.indexOf(".noterik.com/progressive/") > -1) {
 					Random randomGenerator = new Random();
 					Integer random= randomGenerator.nextInt(100000000);
@@ -403,12 +407,20 @@ public class EuscreenxlitemApplication extends Html5Application{
 					catch (Exception e){}
 					
 					video = video+"?ticket="+ticket;
+					System.out.println("VALID TICKET SEND2="+video);
 
 				}
 				
 				String mime = "video/mp4";
 				src.put("src", video);
 				src.put("mime", mime);
+				
+				FsNode maggieNode = Fs.getNode(node.getPath());
+				//System.out.println("MAGGIENODE="+maggieNode.asXML());
+				String duration = maggieNode.getProperty(FieldMappings.getSystemFieldName("duration"));
+				//System.out.println("DURATION="+timeToSeconds(duration));
+				src.put("duration",""+timeToSeconds(duration));
+				src.put("maggieid", maggieNode.getPath());
 
 				sourcesArray.add(src);
 			}
@@ -422,7 +434,11 @@ public class EuscreenxlitemApplication extends Html5Application{
 				objectToSend.put("sources", new JSONArray().add(src));
 			}
 			
+
+			
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
+			
+			
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
 			String audio = rawNode.getProperty("mount");
@@ -751,6 +767,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 				FsNode retrievedNode = i.next();
 				
 				String path = retrievedNode.getPath();
+				//System.out.println("retrievedNode.getPath="+path);
 				String[] splits = path.split("/");
 				String provider = splits[4];
 				
@@ -919,7 +936,7 @@ public class EuscreenxlitemApplication extends Html5Application{
 			content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
 			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
 			+ "<role>user</role>"
-			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
+			+ "<expiry>"+expiry+"</expiry><maxRequests>100</maxRequests></properties></fsxml>";
 		}
 		System.out.println(getCurrentTimeStamp()+" sending content "+content);
 		httpRequestBodyWriter.write(content);
@@ -1020,6 +1037,30 @@ public class EuscreenxlitemApplication extends Html5Application{
 	    Date now = new Date();
 	    String strDate = sdfDate.format(now);
 	    return strDate;
+	}
+	
+	
+	private int timeToSeconds(String time) {
+		String[] parts = time.split(":");
+		if (parts.length==3) {
+			try {
+				int sec = Integer.parseInt(parts[2]);
+				int min = Integer.parseInt(parts[1]);
+				int hour = Integer.parseInt(parts[0]);
+				return (sec+(min*60)+(hour*3600));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		} else if (parts.length==2) {
+			try {
+				int sec = Integer.parseInt(parts[1]);
+				int min = Integer.parseInt(parts[0]);
+				return (sec+(min*60));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		}
+		return 3600;
 	}
 	
 }
