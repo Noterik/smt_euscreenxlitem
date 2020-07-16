@@ -25,6 +25,7 @@
   padding-right: 0px;
   max-height: 500px;
   position: relative;
+  overflow: hidden;
 }
 .item .main .row .left .row .image-player a .zoom {
   display: block;
