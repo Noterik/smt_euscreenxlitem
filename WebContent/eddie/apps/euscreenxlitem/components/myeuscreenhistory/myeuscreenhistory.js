@@ -20,11 +20,9 @@ Myeuscreenhistory.prototype.addItemToHistory = function(id) {
 	}
 	if(rs){
 		var splitedRegexResult = rs[0].split('=');
-		console.log("RESULT = " + splitedRegexResult);
 		var user = splitedRegexResult[1];
 		
 		var historyApiUrl = location.protocol + "//" + location.host +  "/" + "myeuscreen.html?action=addHistory&user=" + user + "&id=" + id;
-		console.log(historyApiUrl);
 	
 		$('<iframe>', {
 	   src: historyApiUrl,
