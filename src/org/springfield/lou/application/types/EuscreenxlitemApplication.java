@@ -315,7 +315,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 				metaString += "<meta property=\"og:title\" content=\""
 						+ n.getProperty(FieldMappings.getSystemFieldName("title")) + "\" />";
 				metaString += "<meta property=\"og:site_name\" content=\"EUscreenXL\" />";
-				metaString += "<meta property=\"og:url\" content=\"http://euscreen.eu/item.html?id=" + id + "\" />";
+				metaString += "<meta property=\"og:url\" content=\"https://euscreen.eu/item.html?id=" + id + "\" />";
 				metaString += "<meta property=\"og:description\" content=\""
 						+ n.getProperty(FieldMappings.getSystemFieldName("summaryEnglish")) + "\" />";
 				metaString += "<meta property=\"og:image\" content=\""
@@ -402,7 +402,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 						e.printStackTrace();
 					}
 
-					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath()
+					video = "https://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath()
 							+ "/rawvideo/1/raw." + extension + "?ticket=" + ticket;
 
 					System.out.println("VALID TICKET SEND=" + video);
@@ -412,6 +412,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 					String ticket = Integer.toString(random);
 
 					String videoFile = video.substring(video.indexOf("progressive") + 11);
+					videoFile = videoFile.indexOf("http://") == 0 ? videoFile.replaceFirst("http", "https") : videoFile;
 
 					try {
 						// System.out.println("CallingSendTicket");
@@ -419,11 +420,11 @@ public class EuscreenxlitemApplication extends Html5Application {
 						sendTicket(videoFile, ipAddress, ticket);
 					} catch (Exception e) {
 					}
-
+					
+					video = video.startsWith("http://") ? video.replaceFirst("http", "https") : video;
 					video = video + "?ticket=" + ticket;
 					System.out.println("VALID TICKET SEND2=" + video);
-
-				}
+				}				
 
 				String mime = "video/mp4";
 				src.put("src", video);
@@ -447,13 +448,16 @@ public class EuscreenxlitemApplication extends Html5Application {
 			String extension = rawNode.getProperty("extension");
 			String mimeType = "audio/mpeg";
 			if (!audio.startsWith("http://") && !audio.startsWith("https://")) {
-				audio = "http://" + audio + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+				audio = "https://" + audio + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 				if (extension.equalsIgnoreCase("wav")) {
 					mimeType = "audio/wav";
 				} else if (extension.equalsIgnoreCase("ogg")) {
 					mimeType = "audio/ogg";
 				}
+			} else if (audio.indexOf(".noterik.com/") > 0) {
+				audio = audio.startsWith("http://") ? audio.replaceFirst("http", "https")  : audio;
 			}
+			
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("mime", mimeType);
 			objectToSend.put("src", audio);
@@ -465,10 +469,15 @@ public class EuscreenxlitemApplication extends Html5Application {
 			String rawpicture = rawNode.getProperty("mount");
 			String extension = rawNode.getProperty("extension");
 			if (!rawpicture.startsWith("http://") && !rawpicture.startsWith("https://")) {
-				rawpicture = "http://" + rawpicture + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+				rawpicture = "https://" + rawpicture + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
 			} else {
 				if (rawpicture.contains("/edna")) {
 					rawpicture = rawpicture.replace("/edna", "");
+					rawpicture = rawpicture.startsWith("http://") ? rawpicture.replaceFirst("http", "https") : rawpicture;
+				}
+				
+				if (rawpicture.indexOf(".noterik.com/") > 0) {
+					rawpicture = rawpicture.startsWith("http://") ? rawpicture.replaceFirst("http", "https")  : rawpicture;
 				}
 			}
 			String picture = node.getProperty(FieldMappings.getSystemFieldName("screenshot"));
@@ -477,6 +486,11 @@ public class EuscreenxlitemApplication extends Html5Application {
 			} else {
 				if (picture.contains("/edna")) {
 					picture = picture.replace("/edna", "");
+					picture = picture.startsWith("http://") ? picture.replaceFirst("http", "https")  : picture;
+				}
+				
+				if (picture.indexOf(".noterik.com/") > 0) {
+					picture = picture.startsWith("http://") ? picture.replaceFirst("http", "https")  : picture;
 				}
 			}
 			JSONObject objectToSend = new JSONObject();
@@ -490,8 +504,11 @@ public class EuscreenxlitemApplication extends Html5Application {
 			String doc = rawNode.getProperty("mount");
 			String extension = rawNode.getProperty("extension");
 			if (!doc.startsWith("http://") && !doc.startsWith("https://")) {
-				doc = "http://" + doc + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+				doc = "https://" + doc + ".noterik.com" + node.getPath() + "/rawaudio/1/raw." + extension;
+			} else if (doc.indexOf(".noterik.com/") > 0) {
+				doc = doc.startsWith("http://") ? doc.replaceFirst("http", "https")  : doc;
 			}
+			
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", doc);
 
@@ -831,7 +848,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 		String body = "Identifier: " + id + "<br/>";
 		body += "Title: " + title + "<br/>";
 		body += "Link to item on EUScreen:<br/>";
-		body += "<a href=\"http://euscreen.eu/item.html?id=" + id + "\">http://euscreen.eu/item.html?id=" + id
+		body += "<a href=\"https://euscreen.eu/item.html?id=" + id + "\">https://euscreen.eu/item.html?id=" + id
 				+ "</a><br/>";
 		body += "-------------------------------------------<br/><br/>";
 		body += "Subject: " + subject + "<br/>";
@@ -876,10 +893,13 @@ public class EuscreenxlitemApplication extends Html5Application {
 		if (screenshot != null) {
 			if (!wantedna) {
 				screenshot = screenshot.replace("edna/", "");
+				screenshot = screenshot.startsWith("http://") ? screenshot.replaceFirst("http", "https")  : screenshot;
 			} else {
 				int pos = screenshot.indexOf("edna/");
 				if (pos != -1) {
-					screenshot = "http://images.euscreenxl.eu/" + screenshot.substring(pos + 5);
+					screenshot = "https://images.euscreenxl.eu/" + screenshot.substring(pos + 5);
+				} else {
+					screenshot = screenshot.startsWith("http://") ? screenshot.replaceFirst("http", "https")  : screenshot ;
 				}
 			}
 		}
