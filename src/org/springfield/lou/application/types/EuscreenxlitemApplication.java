@@ -47,7 +47,7 @@ import java.util.Set;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -977,7 +977,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 	}
 
 	private static void sendCounter(String videoid, String provider, String ipAddress) throws IOException {
-		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/counter/" + videoid);
+		URL serverUrl = new URL("https://rdbg.tuxic.nl/euapi/api.php/counter/" + videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection) serverUrl.openConnection();
 
 		urlConnection.setDoOutput(true);
@@ -1004,6 +1004,8 @@ public class EuscreenxlitemApplication extends Html5Application {
 		httpRequestBodyWriter.write(content);
 		httpRequestBodyWriter.close();
 
+		System.out.println("Send counter for "+videoid);
+		
 		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
 		while (httpResponseScanner.hasNextLine()) {
 			System.out.println(httpResponseScanner.nextLine());
@@ -1012,7 +1014,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 	}
 
 	private static String getCounter(String videoid) throws IOException {
-		URL serverUrl = new URL("http://rdbg.tuxic.nl/euapi/api.php/total/" + videoid);
+		URL serverUrl = new URL("https://rdbg.tuxic.nl/euapi/api.php/total/" + videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection) serverUrl.openConnection();
 
 		urlConnection.setDoOutput(true);
@@ -1023,6 +1025,8 @@ public class EuscreenxlitemApplication extends Html5Application {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
+		
+		System.out.println("Counter result for "+videoid+" = "+result);
 
 		rd.close();
 
