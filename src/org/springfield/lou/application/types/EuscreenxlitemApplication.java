@@ -114,9 +114,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 			e.printStackTrace();
 		}
 
-		// refer the header and footer elements from euscreenxl element application.
-		this.addReferid("header", "/euscreenxlelements/header");
-		this.addReferid("footer", "/euscreenxlelements/footer");
+		// refer elements from euscreenxl element application.
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
@@ -156,8 +154,6 @@ public class EuscreenxlitemApplication extends Html5Application {
 			loadStyleSheet(s, "customizations");
 			s.setRole("itempage");
 			loadContent(s, "template");
-			loadContent(s, "header");
-			loadContent(s, "footer");
 			loadContent(s, "viewer");
 			loadContent(s, "related");
 			loadContent(s, "metadata");
@@ -240,12 +236,8 @@ public class EuscreenxlitemApplication extends Html5Application {
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		}
 
-		// System.out.println("Euscreenxlitem.init2222()");
 		if (s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null) {
-			loadContent(s, "footer");
 			s.putMsg("template", "", "activateTooltips()");
-		} else {
-			removeContent(s, "footer");
 		}
 
 		this.loadContent(s, "alert");
