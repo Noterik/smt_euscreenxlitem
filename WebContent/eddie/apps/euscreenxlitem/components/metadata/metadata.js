@@ -22,8 +22,13 @@ var Metadata = function(options){
 Metadata.prototype = Object.create(Component.prototype);
 Metadata.prototype.setData = function(message){
 	var data = JSON.parse(message);
-	console.log(data);
 		
 	var template = _.template(this.element.find('#' + data.type + '-template').text())
 	this.contents.html(template({item: data}));
+}
+
+Metadata.prototype.setTitle = function(message) {
+    var data = JSON.parse(message);
+    
+    jQuery('.item-title').text(data.title);
 }

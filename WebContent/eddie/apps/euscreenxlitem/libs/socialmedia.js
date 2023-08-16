@@ -16,9 +16,6 @@
 		        case "facebook":
 		        	shareFacebook();
 		        	break;
-		        case "google":
-		        	shareGoogle();
-		        	break;
 	        }
         });
         
@@ -60,25 +57,6 @@
 		                 ',left='   + left;
 		    
 		    window.open(url, 'facebook', opts);
-		    return false;
-        }
-        
-         // share to google
-        var shareGoogle = function(){
-	        var width  = 575,
-		        height = 400,
-		        uri = encodeURIComponent(settings.url),
-		        text = encodeURIComponent(settings.text),
-		        left   = ($(window).width()  - width)  / 2,
-		        top    = ($(window).height() - height) / 2,
-		        url    = 'https://plus.google.com/share?url='+uri,
-		        opts   = 'status=1' +
-		                 ',width='  + width  +
-		                 ',height=' + height +
-		                 ',top='    + top    +
-		                 ',left='   + left;
-		    
-		    window.open(url, 'google', opts);
 		    return false;
         }
     };

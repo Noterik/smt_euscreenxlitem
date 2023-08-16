@@ -197,7 +197,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 			e1.printStackTrace();
 		}
 
-		String ht = "<h1 style='display:inline-block;'><b>" + count + "  <font size='2'>VIEWs</font></b></h1>";
+		String ht = count +" views";
 		s.addContent("media-action", ht);
 
 		this.removeContent(s, "synctime");
@@ -541,7 +541,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 		}
 
 		JSONObject message = new JSONObject();
-
+		
 		HashMap<String, String> mappings = FieldMappings.getMappings();
 		for (Iterator<String> i = mappings.keySet().iterator(); i.hasNext();) {
 			String readable = i.next();
@@ -567,6 +567,14 @@ public class EuscreenxlitemApplication extends Html5Application {
 		}
 		// message.put("provider")
 		// message.put("provider", this.countriesForProviders.get(provider));
+		JSONObject title = new JSONObject();
+		String value = node.getProperty(FieldMappings.getSystemFieldName("title"));
+		if (value.trim().length() > 0) {
+			title.put("title", value);
+		} else { 
+			title.put("title", "-");
+		}
+		s.putMsg("metadata", "", "setTitle("+ title + ")");
 		s.putMsg("metadata", "", "setData(" + message + ")");
 
 	}
