@@ -120,7 +120,6 @@ public class EuscreenxlitemApplication extends Html5Application {
 		this.addReferid("warning", "/euscreenxlelements/warning");
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
-		this.addReferid("ads", "/euscreenxlelements/ads");
 		this.addReferid("analytics", "/euscreenxlelements/analytics");
 		this.addReferid("config", "/euscreenxlelements/config");
 		this.addReferid("urltransformer", "/euscreenxlelements/urltransformer");
@@ -163,7 +162,6 @@ public class EuscreenxlitemApplication extends Html5Application {
 			loadContent(s, "warning");
 			loadContent(s, "social");
 			loadContent(s, "videocopyright");
-			loadContent(s, "ads");
 
 			startScreen(s);
 
@@ -977,7 +975,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 	}
 
 	private static void sendCounter(String videoid, String provider, String ipAddress) throws IOException {
-		URL serverUrl = new URL("https://rdbg.tuxic.nl/euapi/api.php/counter/" + videoid);
+		URL serverUrl = new URL("https://euscreen.eu/counter/view-counter.php?eus_id=" + videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection) serverUrl.openConnection();
 
 		urlConnection.setDoOutput(true);
@@ -1014,7 +1012,7 @@ public class EuscreenxlitemApplication extends Html5Application {
 	}
 
 	private static String getCounter(String videoid) throws IOException {
-		URL serverUrl = new URL("https://rdbg.tuxic.nl/euapi/api.php/total/" + videoid);
+		URL serverUrl = new URL("https://euscreen.eu/counter/view-total.php?eus_id=" + videoid);
 		HttpURLConnection urlConnection = (HttpURLConnection) serverUrl.openConnection();
 
 		urlConnection.setDoOutput(true);

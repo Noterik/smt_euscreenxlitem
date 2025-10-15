@@ -22,7 +22,7 @@ Myeuscreenhistory.prototype.addItemToHistory = function(id) {
 		var splitedRegexResult = rs[0].split('=');
 		var user = splitedRegexResult[1];
 		
-		var historyApiUrl = location.protocol + "//" + location.host +  "/" + "myeuscreen.html?action=addHistory&user=" + user + "&id=" + id;
+		var historyApiUrl = location.protocol + "//" + location.host +  "/euscreen-collections/" + "myeuscreen.html?action=addHistory&user=" + user + "&id=" + id;
 	
 		$('<iframe>', {
 	   src: historyApiUrl,

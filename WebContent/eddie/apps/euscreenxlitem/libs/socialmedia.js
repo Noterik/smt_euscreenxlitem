@@ -3,7 +3,7 @@
     $.fn.SocialSharing = function(customSettings) {
         var settings = $.extend({
             type:  'twitter',
-            url: 'http://beta.euscreenxl.eu/item.html?id=EUS_7E0602627F8844AC9FFFDA2E96374804',
+            url: 'http://euscreen.eu/item.html?id=EUS_7E0602627F8844AC9FFFDA2E96374804',
             text : 'Take a look at this item on EUscreen'             
         }, customSettings || {});
         
